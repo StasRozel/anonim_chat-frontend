@@ -148,8 +148,8 @@ const TelegramChatApp: React.FC = () => {
   // Подключение к Socket.IO
   useEffect(() => {
     if (!user) return; // Ждем пока пользователь будет сгенерирован
-    
-    const socketInstance = io(process.env.REACT_APP_API_URL || 'http://localhost:5000');
+
+    const socketInstance = io(process.env.REACT_APP_API_URL || 'https://anonim-chat-frontend.onrender.com/');
     setSocket(socketInstance);
 
     socketInstance.on('connect', () => {

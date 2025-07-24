@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, User } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
-import './Chat.css';
+import './Chat.css'; 
 
 // Типы
 interface TelegramUser {
@@ -149,7 +149,7 @@ const TelegramChatApp: React.FC = () => {
   useEffect(() => {
     if (!user) return; // Ждем пока пользователь будет сгенерирован
 
-    const socketInstance = io(process.env.REACT_APP_API_URL || 'https://anonim-chat-frontend.onrender.com/');
+    const socketInstance = io(process.env.REACT_APP_API_URL);
     setSocket(socketInstance);
 
     socketInstance.on('connect', () => {

@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { useSocketRedux } from "../../hooks/useSocket";
 import HeaderChat from "../Chat/HeaderChat/HeaderChat";
 import FooterChat from "../Chat/FooterChat/FooterChat";
+import PinnedMessage from "../Message/PinnedMessage";
 
 const TelegramChatApp: React.FC = () => {
   const { user } = useTelegram();
@@ -59,10 +60,9 @@ const TelegramChatApp: React.FC = () => {
     <div className="chat-container">
         <HeaderChat user={user} isConnected={isConnected}/>
 
-      {/* Список сообщений */}
       <div className="chat-messages">
         {messages.map((message: Message) => (
-          <MessageComponent
+          message.isPinned ? <PinnedMessage message={message}/> : <MessageComponent
             key={message.id}
             message={message}
             currentUser={user}

@@ -1,7 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Message, TelegramUser } from '../../types/types';
 
-// Действия для управления сокетом
 export const socketConnect = createAction<{
   serverUrl: string;
   user: TelegramUser;
@@ -25,12 +24,17 @@ export const socketSendMessage = createAction<{
   message: Omit<Message, 'id' | 'timestamp'>;
 }>('socket/sendMessage');
 
+export const socketPinMessage = createAction<{
+  chatId: string;
+  message: Omit<Message, 'user' | 'timestamp' | 'type' |'isPinned' | 'text'>;
+}>('socket/pinMessage');
+
 export const socketPing = createAction('socket/ping');
 
-// Действия от сервера (будут обрабатываться middleware)
 export const socketConnected = createAction('socket/connected');
 export const socketDisconnected = createAction<string>('socket/disconnected');
 export const socketMessageReceived = createAction<Message>('socket/messageReceived');
+export const socketMessagePinned = createAction<Message>('socket/messagePinned');
 export const socketUserJoined = createAction<Message>('socket/userJoined');
 export const socketUserLeft = createAction<Message>('socket/userLeft');
 export const socketError = createAction<any>('socket/error');

@@ -14,13 +14,20 @@ import {
   socketLeaveChat,
   socketSendMessage,
   socketPing,
+  socketPinMessage,
+  socketMessagePinned,
 } from "../actions/socket.actions";
-import { setConnectionStatus, addMessage } from "../slices/chat.slice";
+import {
+  setConnectionStatus,
+  addMessage,
+  setMessages,
+} from "../slices/chat.slice";
 import {
   clearConnectionError,
   setConnectionError,
   setPong,
 } from "../slices/socket.slice";
+import { chatAPI } from "../../services/api";
 
 let socket: Socket | null = null;
 
@@ -66,6 +73,12 @@ export const socketMiddleware: Middleware =
           console.log("New message received:", message);
           dispatch(socketMessageReceived(message));
           dispatch(addMessage(message));
+        });
+
+        socket.on("pin-message", async (message) => {
+          console.log("Message pinned:", message);
+          const oldMessages = await chatAPI.getMessages();
+          dispatch(setMessages(oldMessages));
         });
 
         socket.on("user-joined", (message) => {
@@ -126,6 +139,15 @@ export const socketMiddleware: Middleware =
           const { chatId, message } = action.payload;
           socket.emit("send-message", { chatId, message });
           console.log("Sending message:", message.text);
+        }
+        break;
+      }
+
+      case socketPinMessage.type: {
+        if (socket?.connected) {
+          const { chatId, message } = action.payload;
+          socket.emit("pin-message", { chatId, message });
+          console.log("Pinned message:", message);
         }
         break;
       }

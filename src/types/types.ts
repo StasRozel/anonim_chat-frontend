@@ -13,7 +13,8 @@ export interface Message {
   timestamp: string;
   type: 'text' | 'system';
   chatId?: string;
-  replyTo?: string;
+  isPinned: boolean,
+  replyTo?: string | null;
   edited?: boolean;
   editedAt?: string;
 }

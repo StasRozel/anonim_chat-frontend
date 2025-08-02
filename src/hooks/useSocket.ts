@@ -7,8 +7,10 @@ import {
   socketLeaveChat,
   socketSendMessage,
   socketPing,
+  socketPinMessage,
 } from '../store/actions/socket.actions';
 import { TelegramUser } from '../types/types';
+import { is } from 'immutable';
 
 export const useSocketRedux = () => {
   const dispatch = useAppDispatch();
@@ -37,9 +39,17 @@ export const useSocketRedux = () => {
       text: text.trim(),
       user: user,
       type: 'text' as const,
+      isPinned: false,
     };
     dispatch(socketSendMessage({ chatId, message }));
   }, [dispatch]);
+
+  const pinMessage = useCallback((chatId: string, id: string) => {
+    const message = {
+      id: id,
+    };
+    dispatch(socketPinMessage({chatId, message}));
+  }, [dispatch])
 
   const ping = useCallback(() => {
     dispatch(socketPing());
@@ -57,6 +67,7 @@ export const useSocketRedux = () => {
     joinChat,
     leaveChat,
     sendMessage,
+    pinMessage,
     ping,
   };
 };

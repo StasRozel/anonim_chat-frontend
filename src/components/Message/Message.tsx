@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState } from "react";
 import { Message, TelegramUser } from "../../types/types";
 import { formatTime } from "../../utils/formatTime";
+import ContextMenu from "../ContextMenu/ContextMenu";
 
 // Компонент отдельного сообщения
 const MessageComponent: React.FC<{
@@ -8,6 +10,12 @@ const MessageComponent: React.FC<{
 }> = ({ message, currentUser }) => {
   const isOwn = currentUser && message.user.id === currentUser.id;
   const isSystem = message.type === "system";
+  const messageRef = useRef<HTMLDivElement>(null);
+  const [showContextMenu, setShowContextMenu] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
   // Функция для генерации цвета аватара на основе ID пользователя
   const getAvatarColor = (userId: number) => {
@@ -26,6 +34,29 @@ const MessageComponent: React.FC<{
     return colors[userId % colors.length];
   };
 
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault(); // Отменяем стандартное контекстное меню браузера
+
+    setContextMenuPosition({
+      x: e.clientX,
+      y: e.clientY,
+    });
+    setShowContextMenu(true);
+  };
+
+  const handleClickOutside = () => {
+    setShowContextMenu(false);
+  };
+
+  useEffect(() => {
+    if (showContextMenu) {
+      document.addEventListener("click", handleClickOutside);
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }
+  }, [showContextMenu]);
+
   if (isSystem) {
     return (
       <div className="system-message">
@@ -35,23 +66,37 @@ const MessageComponent: React.FC<{
   }
 
   return (
-    <div className={`message ${isOwn ? "own" : "other"}`}>
-      <div className="message-content">
-        <div
-          className="message-avatar"
-          style={{ backgroundColor: getAvatarColor(message.user.id) }}
-        >
-          {message.user.first_name[0]}
-        </div>
-        <div className="message-bubble">
-          {!isOwn && (
-            <div className="message-author">{message.user.first_name}</div>
-          )}
-          <div className="message-text">{message.text}</div>
-          <div className="message-time">{formatTime(message.timestamp)}</div>
+    <>
+      <div
+        ref={messageRef}
+        className={`message ${isOwn ? "own" : "other"}`}
+        onContextMenu={handleContextMenu} // Добавляем обработчик ПКМ
+      >
+        <div className="message-content">
+          <div
+            className="message-avatar"
+            style={{ backgroundColor: getAvatarColor(message.user.id) }}
+          >
+            {message.user.first_name[0]}
+          </div>
+          <div className="message-bubble">
+            {!isOwn && (
+              <div className="message-author">{message.user.first_name}</div>
+            )}
+            <div className="message-text">{message.text}</div>
+            <div className="message-time">{formatTime(message.timestamp)}</div>
+          </div>
         </div>
       </div>
-    </div>
+      {showContextMenu && (
+        <ContextMenu
+          message={message}
+          user={currentUser}
+          position={contextMenuPosition}
+          onClose={() => setShowContextMenu(false)}
+        />
+      )}
+    </>
   );
 };
 

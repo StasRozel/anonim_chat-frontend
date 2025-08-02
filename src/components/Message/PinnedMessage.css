@@ -1,0 +1,438 @@
+/* Основные стили сообщения */
+.message {
+  display: flex;
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.message.own {
+  justify-content: flex-end;
+}
+
+.message.other {
+  justify-content: flex-start;
+}
+
+/* Стили для закрепленного сообщения */
+.message.message-pinned {
+  background: linear-gradient(90deg, #fef3c7 0%, #fbbf24 2px, #fef3c7 2px);
+  border-left: 4px solid #f59e0b;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+  position: relative;
+}
+
+.message.message-pinned::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
+  border-radius: 8px 8px 0 0;
+}
+
+/* Индикатор закрепления */
+.message-pinned-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #92400e;
+  font-weight: 600;
+  margin-bottom: 4px;
+  background: rgba(245, 158, 11, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.message-pinned-indicator svg {
+  color: #f59e0b;
+  transform: rotate(45deg);
+}
+
+/* Контент сообщения */
+.message-content {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+}
+
+.message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.message-bubble {
+  background: #f3f4f6;
+  padding: 12px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.message.own .message-bubble {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Закрепленное сообщение - особый стиль для bubble */
+.message-pinned .message-bubble {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+}
+
+.message-pinned.own .message-bubble {
+  background: #1e40af;
+  border: 1px solid #60a5fa;
+  box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.3);
+}
+
+.message-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.message-pinned .message-author {
+  color: #92400e;
+}
+
+.message-text {
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.message-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.message-time {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.message-pinned .message-time {
+  color: #a16207;
+}
+
+.message-edited {
+  font-size: 11px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Системные сообщения */
+.system-message {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.system-message-content {
+  background: #f9fafb;
+  color: #6b7280;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Анимация для новых закрепленных сообщений */
+@keyframes pinHighlight {
+  0% {
+    background: #fef3c7;
+    transform: scale(1);
+  }
+  50% {
+    background: #fcd34d;
+    transform: scale(1.02);
+  }
+  100% {
+    background: #fef3c7;
+    transform: scale(1);
+  }
+}
+
+.message-pinned.just-pinned {
+  animation: pinHighlight 0.6s ease-in-out;
+}
+
+/* Hover эффекты */
+.message:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.message-pinned:hover {
+  background: linear-gradient(90deg, #fde68a 0%, #f59e0b 2px, #fde68a 2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+  .message-pinned {
+    background: linear-gradient(90deg, #451a03 0%, #f59e0b 2px, #451a03 2px);
+    border-left-color: #fbbf24;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
+  }
+
+  .message-pinned-indicator {
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.1);
+  }
+
+  .message-pinned .message-bubble {
+    background: #292524;
+    border-color: #a16207;
+  }
+
+  .message-pinned .message-author {
+    color: #fbbf24;
+  }
+
+  .message-pinned .message-time {
+    color: #d97706;
+  }
+
+  .message-pinned:hover {
+    background: linear-gradient(90deg, #78350f 0%, #f59e0b 2px, #78350f 2px);
+  }
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .message {
+    margin-bottom: 8px;
+    padding: 4px;
+  }
+
+  .message-content {
+    max-width: 85%;
+  }
+
+  .message-pinned-indicator {
+    font-size: 11px;
+    padding: 1px 4px;
+  }
+
+  .message-bubble {
+    padding: 8px;
+  }
+}
+
+.chat-pinned-message {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-bottom: 1px solid #f59e0b;
+  padding: 8px 16px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.chat-pinned-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
+}
+
+.chat-pinned-message:hover {
+  background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+}
+
+.chat-pinned-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
+}
+
+.chat-pinned-info {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.chat-pinned-icon {
+  color: #f59e0b;
+  margin-right: 8px;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.chat-pinned-details {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.chat-pinned-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #92400e;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.chat-pinned-text {
+  font-size: 13px;
+  color: #78350f;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-pinned-author {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.chat-pinned-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.chat-pinned-action-btn {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #92400e;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-pinned-action-btn:hover {
+  background: rgba(245, 158, 11, 0.1);
+  transform: scale(1.1);
+}
+
+/* Анимация появления */
+@keyframes slideDownFromHeader {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-pinned-message {
+  animation: slideDownFromHeader 0.3s ease-out;
+}
+
+/* Анимация исчезновения */
+@keyframes slideUpToHeader {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.chat-pinned-message.hiding {
+  animation: slideUpToHeader 0.3s ease-in forwards;
+}
+
+/* Темная тема для заголовка */
+@media (prefers-color-scheme: dark) {
+  .chat-pinned-message {
+    background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+    border-bottom-color: #a16207;
+  }
+
+  .chat-pinned-message:hover {
+    background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+  }
+
+  .chat-pinned-label {
+    color: #fbbf24;
+  }
+
+  .chat-pinned-text {
+    color: #fde68a;
+  }
+
+  .chat-pinned-action-btn {
+    color: #fbbf24;
+  }
+
+  .chat-pinned-action-btn:hover {
+    background: rgba(251, 191, 36, 0.1);
+  }
+}
+
+/* Мобильная адаптация для заголовка */
+@media (max-width: 768px) {
+  .chat-pinned-message {
+    padding: 6px 12px;
+  }
+
+  .chat-pinned-label {
+    font-size: 10px;
+  }
+
+  .chat-pinned-text {
+    font-size: 12px;
+  }
+
+  .chat-pinned-action-btn {
+    padding: 3px;
+  }
+}
+
+/* Стили для контейнера чата с закрепленным сообщением */
+.chat-container.has-pinned {
+  padding-top: 0;
+}
+
+.chat-messages.has-pinned {
+  padding-top: 8px;
+}
+
+/* Пульсация для привлечения внимания к новому закрепленному сообщению */
+@keyframes pinPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+  }
+}
+
+.chat-pinned-message.new-pin {
+  animation: pinPulse 1s ease-out 3;
+}

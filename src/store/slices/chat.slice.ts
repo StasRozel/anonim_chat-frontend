@@ -14,7 +14,9 @@ const initialState: ChatState = {
       text: 'Добро пожаловать в чат! 👋',
       user: { id: 0, first_name: 'Система' },
       timestamp: new Date().toISOString(),
-      type: 'system'
+      type: 'system',
+      isPinned: false,
+      replyTo: null
     }
   ],
   inputText: '',
@@ -33,7 +35,6 @@ export const chatSlice = createSlice({
       state.inputText = '';
     },
     addMessage: (state, action: PayloadAction<Message>) => {
-      // Преобразуем Date в строку при добавлении
       const messageWithStringTimestamp = {
         ...action.payload,
         timestamp: action.payload.timestamp
@@ -41,7 +42,6 @@ export const chatSlice = createSlice({
       state.messages.push(messageWithStringTimestamp);
     },
     setMessages: (state, action: PayloadAction<Message[]>) => {
-      // Преобразуем все Date в строки
       state.messages = action.payload.map((msg: Message) => ({
         ...msg,
         timestamp: msg.timestamp 

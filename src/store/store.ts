@@ -18,6 +18,7 @@ export const store = configureStore({
         ignoredActions: [
           'socket/connect',
           'socket/messageReceived',
+          'socket/messagePinned',
           'socket/userJoined',
           'socket/userLeft',
           'socket/error',

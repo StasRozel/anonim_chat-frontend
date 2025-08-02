@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import TelegramChatApp from './components/Chat/Chat';
+import TelegramChatApp from './components/Layout/TelegramChatApp';
 
 function App() {
   return (

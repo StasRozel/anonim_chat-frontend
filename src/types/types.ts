@@ -10,8 +10,22 @@ export interface Message {
   id: string;
   text: string;
   user: TelegramUser;
-  timestamp: Date;
+  timestamp: string;
   type: 'text' | 'system';
+  chatId?: string;
+  replyTo?: string;
+  edited?: boolean;
+  editedAt?: string;
+}
+
+export interface SendMessageData {
+  chatId: string;
+  message: Omit<Message, 'id' | 'timestamp'>;
+}
+
+export interface JoinChatData {
+  chatId: string;
+  user: TelegramUser;
 }
 
 declare global {

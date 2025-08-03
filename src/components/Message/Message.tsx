@@ -2,20 +2,24 @@ import { useEffect, useRef, useState } from "react";
 import { Message, TelegramUser } from "../../types/types";
 import { formatTime } from "../../utils/formatTime";
 import ContextMenu from "../ContextMenu/ContextMenu";
+import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
+import { hideContextMenu, showContextMenu } from "../../store/slices/contextMenu.slice";
+import "./Message.css";
 
 // Компонент отдельного сообщения
 const MessageComponent: React.FC<{
   message: Message;
   currentUser: TelegramUser | null;
-}> = ({ message, currentUser }) => {
-  const isOwn = currentUser && message.user.id === currentUser.id;
+  messageRef?: React.RefObject<HTMLDivElement>; // Добавляем проп для ref
+}> = ({ message, currentUser, messageRef }) => {
+  const isOwnMessage = currentUser && message.user.id === currentUser.id;
   const isSystem = message.type === "system";
-  const messageRef = useRef<HTMLDivElement>(null);
-  const [showContextMenu, setShowContextMenu] = useState(false);
-  const [contextMenuPosition, setContextMenuPosition] = useState({
-    x: 0,
-    y: 0,
-  });
+  const internalRef = useRef<HTMLDivElement>(null);
+  const { isOpen, position, message: contextMessage } = useAppSelector((state) => state.contextMenu);
+  const dispatch = useAppDispatch();
+
+  // Используем переданный ref или внутренний
+  const elementRef = messageRef || internalRef;
 
   // Функция для генерации цвета аватара на основе ID пользователя
   const getAvatarColor = (userId: number) => {
@@ -37,29 +41,32 @@ const MessageComponent: React.FC<{
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault(); // Отменяем стандартное контекстное меню браузера
 
-    setContextMenuPosition({
-      x: e.clientX,
-      y: e.clientY,
-    });
-    setShowContextMenu(true);
+    dispatch(showContextMenu({
+      position: { x: e.clientX, y: e.clientY },
+      message: message
+    }));
   };
 
   const handleClickOutside = () => {
-    setShowContextMenu(false);
+    dispatch(hideContextMenu())
   };
 
   useEffect(() => {
-    if (showContextMenu) {
+    if (isOpen) {
       document.addEventListener("click", handleClickOutside);
       return () => {
         document.removeEventListener("click", handleClickOutside);
       };
     }
-  }, [showContextMenu]);
+  }, [isOpen]);
 
   if (isSystem) {
     return (
-      <div className="system-message">
+      <div 
+        ref={elementRef}
+        className="system-message"
+        data-message-id={message.id}
+      >
         <div className="system-message-content">{message.text}</div>
       </div>
     );
@@ -68,9 +75,10 @@ const MessageComponent: React.FC<{
   return (
     <>
       <div
-        ref={messageRef}
-        className={`message ${isOwn ? "own" : "other"}`}
+        ref={elementRef}
+        className={`message ${isOwnMessage ? "own" : "other"} ${message.isPinned ? "message-pinned" : ""}`}
         onContextMenu={handleContextMenu} // Добавляем обработчик ПКМ
+        data-message-id={message.id} // Добавляем data-атрибут для поиска
       >
         <div className="message-content">
           <div
@@ -80,7 +88,7 @@ const MessageComponent: React.FC<{
             {message.user.first_name[0]}
           </div>
           <div className="message-bubble">
-            {!isOwn && (
+            {!isOwnMessage && (
               <div className="message-author">{message.user.first_name}</div>
             )}
             <div className="message-text">{message.text}</div>
@@ -88,12 +96,11 @@ const MessageComponent: React.FC<{
           </div>
         </div>
       </div>
-      {showContextMenu && (
+      {isOpen && (
         <ContextMenu
-          message={message}
           user={currentUser}
-          position={contextMenuPosition}
-          onClose={() => setShowContextMenu(false)}
+          position={position}
+          onClose={() => dispatch(hideContextMenu())}
         />
       )}
     </>

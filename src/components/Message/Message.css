@@ -1,0 +1,185 @@
+/* Основные стили сообщения в стиле Telegram */
+.message {
+  display: flex;
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.message.own {
+  justify-content: flex-end;
+}
+
+.message.other {
+  justify-content: flex-start;
+}
+
+/* Контент сообщения */
+.message-content {
+  display: flex;
+  align-items: flex-start;
+  max-width: 70%;
+}
+
+.message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.message-bubble {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message.own .message-bubble {
+  background: #dcf8c6;
+  color: #000;
+}
+
+/* Закрепленное сообщение - особый стиль для bubble */
+.message-pinned .message-bubble {
+  background: #ffffff;
+  border: 1px solid #34c759;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message-pinned.own .message-bubble {
+  background: #dcf8c6;
+  border: 1px solid #34c759;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #34c759;
+  margin-bottom: 4px;
+}
+
+.message-pinned .message-author {
+  color: #34c759;
+}
+
+.message-text {
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  color: #000;
+}
+
+.message-time {
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.message-pinned .message-time {
+  color: #34c759;
+}
+
+/* Системные сообщения */
+.system-message {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.system-message-content {
+  background: #f0f0f0;
+  color: #666;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  border: 1px solid #ddd;
+}
+
+/* Эффект выделения при переходе к сообщению */
+.message-highlighted {
+  animation: messageHighlight 2s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes messageHighlight {
+  0% {
+    background-color: rgba(52, 199, 89, 0.1);
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4);
+  }
+  25% {
+    background-color: rgba(52, 199, 89, 0.2);
+    transform: scale(1.02);
+    box-shadow: 0 0 0 8px rgba(52, 199, 89, 0.2);
+  }
+  50% {
+    background-color: rgba(52, 199, 89, 0.15);
+    transform: scale(1.01);
+    box-shadow: 0 0 0 12px rgba(52, 199, 89, 0.1);
+  }
+  100% {
+    background-color: transparent;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+  }
+}
+
+/* Для закрепленных сообщений особый эффект */
+.message-pinned.message-highlighted {
+  animation: pinnedMessageHighlight 2s ease-in-out;
+}
+
+@keyframes pinnedMessageHighlight {
+  0% {
+    background: #f0f0f0;
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4);
+  }
+  25% {
+    background: #e8f5e8;
+    box-shadow: 0 0 0 8px rgba(52, 199, 89, 0.3);
+    transform: scale(1.02);
+  }
+  50% {
+    background: #f0f8f0;
+    box-shadow: 0 0 0 12px rgba(52, 199, 89, 0.2);
+    transform: scale(1.01);
+  }
+  100% {
+    background: #f0f0f0;
+    box-shadow: none;
+    transform: scale(1);
+  }
+}
+
+/* Hover эффекты */
+.message:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .message {
+    margin-bottom: 8px;
+    padding: 4px;
+  }
+
+  .message-content {
+    max-width: 85%;
+  }
+
+  .message-bubble {
+    padding: 8px;
+  }
+}

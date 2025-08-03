@@ -5,18 +5,21 @@ import { Message, TelegramUser } from "../../types/types";
 import "./ContextMenu.css";
 
 interface ContextMenuProps {
-  message: Message;
   user: TelegramUser | null;
-  position: { x: number; y: number };
+  position: { x: number; y: number } | null;
   onClose: () => void;
 }
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ message, user, position, onClose }) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) => {
   const { currentChatId } = useAppSelector((state) => state.chat);
-  const { pinMessage } = useSocketRedux();
+  const { message } = useAppSelector((state) => state.contextMenu);
+  const { pinMessage, unPinMessage } = useSocketRedux();
+
+  if (!message) return null;
 
   const handlePinMessage = () => {
     if (message.isPinned) {
+      unPinMessage(currentChatId, message.id);
     } else {
       pinMessage(currentChatId, message.id);
     }
@@ -37,8 +40,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ message, user, position, onCl
       className="context-menu"
       style={{
         position: 'fixed',
-        top: position.y,
-        left: position.x,
+        top: position?.y,
+        left: position?.x,
         zIndex: 1000,
       }}
       onClick={(e) => e.stopPropagation()} // Предотвращаем закрытие при клике на меню

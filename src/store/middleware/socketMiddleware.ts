@@ -16,6 +16,7 @@ import {
   socketPing,
   socketPinMessage,
   socketMessagePinned,
+  socketUnPinMessage,
 } from "../actions/socket.actions";
 import {
   setConnectionStatus,
@@ -77,6 +78,12 @@ export const socketMiddleware: Middleware =
 
         socket.on("pin-message", async (message) => {
           console.log("Message pinned:", message);
+          const oldMessages = await chatAPI.getMessages();
+          dispatch(setMessages(oldMessages));
+        });
+
+        socket.on("unpin-message", async (message) => {
+          console.log("Message unpinned:", message);
           const oldMessages = await chatAPI.getMessages();
           dispatch(setMessages(oldMessages));
         });
@@ -148,6 +155,15 @@ export const socketMiddleware: Middleware =
           const { chatId, message } = action.payload;
           socket.emit("pin-message", { chatId, message });
           console.log("Pinned message:", message);
+        }
+        break;
+      }
+
+       case socketUnPinMessage.type: {
+        if (socket?.connected) {
+          const { chatId, message } = action.payload;
+          socket.emit("unpin-message", { chatId, message });
+          console.log("UnPinned message:", message);
         }
         break;
       }

@@ -29,12 +29,18 @@ export const socketPinMessage = createAction<{
   message: Omit<Message, 'user' | 'timestamp' | 'type' |'isPinned' | 'text'>;
 }>('socket/pinMessage');
 
+export const socketUnPinMessage = createAction<{
+  chatId: string;
+  message: Omit<Message, 'user' | 'timestamp' | 'type' |'isPinned' | 'text'>;
+}>('socket/unPinMessage');
+
 export const socketPing = createAction('socket/ping');
 
 export const socketConnected = createAction('socket/connected');
 export const socketDisconnected = createAction<string>('socket/disconnected');
 export const socketMessageReceived = createAction<Message>('socket/messageReceived');
 export const socketMessagePinned = createAction<Message>('socket/messagePinned');
+export const socketMessageUnPinned = createAction<Message>('socket/messageUnPinned');
 export const socketUserJoined = createAction<Message>('socket/userJoined');
 export const socketUserLeft = createAction<Message>('socket/userLeft');
 export const socketError = createAction<any>('socket/error');

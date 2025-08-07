@@ -18,6 +18,7 @@ import {
   socketMessagePinned,
   socketUnPinMessage,
   socketDeleteMessage,
+  socketDeleteAllMessages,
 } from "../actions/socket.actions";
 import {
   setConnectionStatus,
@@ -94,6 +95,10 @@ export const socketMiddleware: Middleware =
           const oldMessages = await chatAPI.getMessages();
           dispatch(setMessages(oldMessages));
         });
+        socket.on("delete-all-messages", (data) => {
+          console.log("All messages deleted:", data);
+          dispatch(setMessages([])); // Очищаем сообщения на клиенте
+        });
 
         socket.on("user-joined", (message) => {
           console.log("User joined:", message);
@@ -166,7 +171,7 @@ export const socketMiddleware: Middleware =
         break;
       }
 
-       case socketUnPinMessage.type: {
+      case socketUnPinMessage.type: {
         if (socket?.connected) {
           const { chatId, message } = action.payload;
           socket.emit("unpin-message", { chatId, message });
@@ -180,6 +185,15 @@ export const socketMiddleware: Middleware =
           const { chatId, messageId } = action.payload;
           socket.emit("delete-message", { chatId, messageId });
           console.log("Delete message:", messageId);
+        }
+        break;
+      }
+
+      case socketDeleteAllMessages.type: {
+        if (socket?.connected) {
+          const chatId = action.payload;
+          socket.emit("delete-all-messages", chatId);
+          console.log("Delete all messages for chat:", chatId);
         }
         break;
       }

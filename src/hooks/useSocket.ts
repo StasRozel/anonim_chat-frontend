@@ -10,6 +10,7 @@ import {
   socketPinMessage,
   socketUnPinMessage,
   socketDeleteMessage,
+  socketDeleteAllMessages,
 } from '../store/actions/socket.actions';
 import { TelegramUser } from '../types/types';
 import { is } from 'immutable';
@@ -64,6 +65,10 @@ export const useSocketRedux = () => {
     dispatch(socketDeleteMessage({chatId, messageId}));
   }, [dispatch])
 
+  const deleteAllMessages = useCallback((chatId: string) => {
+    dispatch(socketDeleteAllMessages(chatId));
+  }, [dispatch])
+
   const ping = useCallback(() => {
     dispatch(socketPing());
   }, [dispatch]);
@@ -83,6 +88,7 @@ export const useSocketRedux = () => {
     pinMessage,
     unPinMessage,
     deleteMessage,
+    deleteAllMessages,
     ping,
   };
 };

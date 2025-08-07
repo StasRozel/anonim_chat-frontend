@@ -1,3 +1,4 @@
+import { socketLeaveChat } from './../store/actions/socket.actions';
 import axios from "axios";
 import { Message } from "../types/types";
 
@@ -15,6 +16,10 @@ class ChatAPI {
         : `${API_BASE_URL}/chat/messages`;
 
       const response = await this.api.get(url);
+
+      if (response.data.length === 0) {
+        return [];
+      }
 
       return response.data.map((msg: any) => ({
         ...msg,

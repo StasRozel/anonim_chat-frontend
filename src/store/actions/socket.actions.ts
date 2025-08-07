@@ -39,6 +39,8 @@ export const socketDeleteMessage = createAction<{
   messageId: string;
 }>('socket/deleteMessage');
 
+export const socketDeleteAllMessages = createAction<string>('socket/deleteAllMessages');
+
 export const socketPing = createAction('socket/ping');
 
 export const socketConnected = createAction('socket/connected');

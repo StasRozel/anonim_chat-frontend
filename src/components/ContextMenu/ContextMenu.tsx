@@ -13,7 +13,7 @@ interface ContextMenuProps {
 const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) => {
   const { currentChatId } = useAppSelector((state) => state.chat);
   const { message } = useAppSelector((state) => state.contextMenu);
-  const { pinMessage, unPinMessage, deleteMessage } = useSocketRedux();
+  const { pinMessage, unPinMessage, deleteMessage, deleteAllMessages } = useSocketRedux();
 
   if (!message) return null;
 
@@ -31,6 +31,10 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) =>
 
   const handleDeleteMessage = () => {
     deleteMessage(currentChatId, message.id);
+  }
+
+  const handleDeleteAllMessages = () => {
+    deleteAllMessages(currentChatId);
   }
 
   const handleCopyMessage = () => {
@@ -60,6 +64,10 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) =>
       <div className="context-menu-item" onClick={handleCopyMessage}>
         📋 Копировать текст
       </div>
+
+      <div className="context-menu-item context-menu-item-danger" onClick={handleDeleteAllMessages}>
+            🗑️ Очистить историю чата
+          </div>
       
       {user && message.user.id === user.id && (
         <>
@@ -68,9 +76,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) =>
             🗑️ Удалить
           </div>
 
-          <div className="context-menu-item context-menu-item-danger">
-            🗑️ Очистить историю чата
-          </div>
+          
         </>
       )}
     </div>

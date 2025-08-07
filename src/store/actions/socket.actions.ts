@@ -34,6 +34,11 @@ export const socketUnPinMessage = createAction<{
   message: Omit<Message, 'user' | 'timestamp' | 'type' |'isPinned' | 'text'>;
 }>('socket/unPinMessage');
 
+export const socketDeleteMessage = createAction<{
+  chatId: string;
+  messageId: string;
+}>('socket/deleteMessage');
+
 export const socketPing = createAction('socket/ping');
 
 export const socketConnected = createAction('socket/connected');

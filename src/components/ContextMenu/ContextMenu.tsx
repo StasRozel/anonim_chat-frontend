@@ -1,7 +1,7 @@
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
+import { useAppSelector } from "../../hooks/useRedux";
 import { useSocketRedux } from "../../hooks/useSocket";
-import { Message, TelegramUser } from "../../types/types";
+import { TelegramUser } from "../../types/types";
 import "./ContextMenu.css";
 
 interface ContextMenuProps {
@@ -13,7 +13,7 @@ interface ContextMenuProps {
 const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) => {
   const { currentChatId } = useAppSelector((state) => state.chat);
   const { message } = useAppSelector((state) => state.contextMenu);
-  const { pinMessage, unPinMessage } = useSocketRedux();
+  const { pinMessage, unPinMessage, deleteMessage } = useSocketRedux();
 
   if (!message) return null;
 
@@ -27,8 +27,11 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) =>
   };
 
   const handleReply = () => {
-
   };
+
+  const handleDeleteMessage = () => {
+    deleteMessage(currentChatId, message.id);
+  }
 
   const handleCopyMessage = () => {
     navigator.clipboard.writeText(message.text);
@@ -61,8 +64,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) =>
       {user && message.user.id === user.id && (
         <>
           <div className="context-menu-separator"></div>
-          <div className="context-menu-item context-menu-item-danger">
+          <div className="context-menu-item context-menu-item-danger" onClick={handleDeleteMessage}>
             🗑️ Удалить
+          </div>
+
+          <div className="context-menu-item context-menu-item-danger">
+            🗑️ Очистить историю чата
           </div>
         </>
       )}

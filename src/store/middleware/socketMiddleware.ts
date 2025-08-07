@@ -17,6 +17,7 @@ import {
   socketPinMessage,
   socketMessagePinned,
   socketUnPinMessage,
+  socketDeleteMessage,
 } from "../actions/socket.actions";
 import {
   setConnectionStatus,
@@ -84,6 +85,12 @@ export const socketMiddleware: Middleware =
 
         socket.on("unpin-message", async (message) => {
           console.log("Message unpinned:", message);
+          const oldMessages = await chatAPI.getMessages();
+          dispatch(setMessages(oldMessages));
+        });
+
+        socket.on("delete-message", async (message) => {
+          console.log("Message deleted:", message);
           const oldMessages = await chatAPI.getMessages();
           dispatch(setMessages(oldMessages));
         });
@@ -164,6 +171,15 @@ export const socketMiddleware: Middleware =
           const { chatId, message } = action.payload;
           socket.emit("unpin-message", { chatId, message });
           console.log("UnPinned message:", message);
+        }
+        break;
+      }
+
+      case socketDeleteMessage.type: {
+        if (socket?.connected) {
+          const { chatId, messageId } = action.payload;
+          socket.emit("delete-message", { chatId, messageId });
+          console.log("Delete message:", messageId);
         }
         break;
       }

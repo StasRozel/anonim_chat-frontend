@@ -3,6 +3,7 @@ import chatReducer from './slices/chat.slice';
 import getAvatarColorReducer from './slices/avatar.slice';
 import socketReducer from './slices/socket.slice';
 import contextMenuReducer from './slices/contextMenu.slice';
+import replyToReducer from './slices/replyTo.slice';
 import { socketMiddleware } from './middleware/socketMiddleware';
 
 export const store = configureStore({
@@ -10,12 +11,12 @@ export const store = configureStore({
     chat: chatReducer,
     socket: socketReducer,
     avatarColor: getAvatarColorReducer,
-    contextMenu: contextMenuReducer // Добавляем редюсер для цвета аватара
+    contextMenu: contextMenuReducer,
+    replyTo: replyToReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Игнорируем socket actions, так как они могут содержать несериализуемые данные
         ignoredActions: [
           'socket/connect',
           'socket/messageReceived',

@@ -1,12 +1,12 @@
 import { Pin, X } from "lucide-react";
-import { Message } from "../../types/types";
+import { Message } from "../../../types/types";
 import "./PinnedMessage.css";
-import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useRedux";
 import {
   hideContextMenu,
   showContextMenu,
-} from "../../store/slices/contextMenu.slice";
-import { useSocketRedux } from "../../hooks/useSocket";
+} from "../../../store/slices/contextMenu.slice";
+import { useSocketRedux } from "../../../hooks/useSocket";
 
 interface PinnedMessageProps {
   message: Message;

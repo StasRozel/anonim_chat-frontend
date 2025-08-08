@@ -1,8 +1,10 @@
 import React from "react";
-import { useAppSelector } from "../../hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { useSocketRedux } from "../../hooks/useSocket";
 import { TelegramUser } from "../../types/types";
 import "./ContextMenu.css";
+import { set } from "immutable";
+import { setMessage, setReplyToMessage } from "../../store/slices/replyTo.slice";
 
 interface ContextMenuProps {
   user: TelegramUser | null;
@@ -12,6 +14,7 @@ interface ContextMenuProps {
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) => {
   const { currentChatId } = useAppSelector((state) => state.chat);
+  const dispatch = useAppDispatch();
   const { message } = useAppSelector((state) => state.contextMenu);
   const { pinMessage, unPinMessage, deleteMessage, deleteAllMessages } = useSocketRedux();
 
@@ -27,6 +30,9 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) =>
   };
 
   const handleReply = () => {
+    dispatch(setReplyToMessage(message.id));
+    dispatch(setMessage(message));
+    onClose();
   };
 
   const handleDeleteMessage = () => {
@@ -51,7 +57,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) =>
         left: position?.x,
         zIndex: 1000,
       }}
-      onClick={(e) => e.stopPropagation()} // Предотвращаем закрытие при клике на меню
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="context-menu-item" onClick={handleReply}>
         📩 Ответить

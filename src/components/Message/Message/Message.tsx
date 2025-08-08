@@ -1,21 +1,27 @@
 import { useEffect, useRef, useState } from "react";
-import { Message, TelegramUser } from "../../types/types";
-import { formatTime } from "../../utils/formatTime";
-import ContextMenu from "../ContextMenu/ContextMenu";
-import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
-import { hideContextMenu, showContextMenu } from "../../store/slices/contextMenu.slice";
+import { Message, TelegramUser } from "../../../types/types";
+import { formatTime } from "../../../utils/formatTime";
+import ContextMenu from "../../ContextMenu/ContextMenu";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useRedux";
+import { hideContextMenu, showContextMenu } from "../../../store/slices/contextMenu.slice";
 import "./Message.css";
+import { chatAPI } from "../../../services/api";
+import { setMessage } from "../../../store/slices/replyTo.slice";
+import { get } from "immutable";
+import ReplyToMessage from "../ReplyToMessage/ReplyToMessage";
 
 // Компонент отдельного сообщения
 const MessageComponent: React.FC<{
   message: Message;
   currentUser: TelegramUser | null;
-  messageRef?: React.RefObject<HTMLDivElement>; // Добавляем проп для ref
+  messageRef?: React.RefObject<HTMLDivElement>;
 }> = ({ message, currentUser, messageRef }) => {
   const isOwnMessage = currentUser && message.user.id === currentUser.id;
   const isSystem = message.type === "system";
   const internalRef = useRef<HTMLDivElement>(null);
+  const [replyToMessage, setReplyToMessage] = useState<Message | null>(null);
   const { isOpen, position, message: contextMessage } = useAppSelector((state) => state.contextMenu);
+  const { replyToMessageId } = useAppSelector((state) => state.replyTo);
   const dispatch = useAppDispatch();
 
   // Используем переданный ref или внутренний
@@ -51,6 +57,21 @@ const MessageComponent: React.FC<{
     dispatch(hideContextMenu())
   };
 
+   useEffect(() => {
+    const getReplyToMessage = async () => {
+      if (message.replyTo) {
+        try {
+          const replyMessage = await chatAPI.getMessageById(message.replyTo);
+          setReplyToMessage(replyMessage);
+        } catch (error) {
+          console.error('Error loading reply message:', error);
+        }
+      }
+    };
+
+    getReplyToMessage();
+  }, [message.replyTo]); 
+
   useEffect(() => {
     if (isOpen) {
       document.addEventListener("click", handleClickOutside);
@@ -77,8 +98,8 @@ const MessageComponent: React.FC<{
       <div
         ref={elementRef}
         className={`message ${isOwnMessage ? "own" : "other"} ${message.isPinned ? "message-pinned" : ""}`}
-        onContextMenu={handleContextMenu} // Добавляем обработчик ПКМ
-        data-message-id={message.id} // Добавляем data-атрибут для поиска
+        onContextMenu={handleContextMenu}
+        data-message-id={message.id}
       >
         <div className="message-content">
           <div
@@ -88,6 +109,7 @@ const MessageComponent: React.FC<{
             {message.user.first_name[0]}
           </div>
           <div className="message-bubble">
+            <ReplyToMessage message={message} replyToMessage={replyToMessage}/>
             {!isOwnMessage && (
               <div className="message-author">{message.user.first_name}</div>
             )}

@@ -1,0 +1,209 @@
+/* Стили для меню ответа в стиле Telegram */
+.reply-to-message-menu {
+  background: #2c2c2e;
+  border-radius: 12px 12px 0 0;
+  padding: 12px 16px;
+  border-left: 3px solid #34c759;
+  position: relative;
+  margin-bottom: 8px;
+  animation: slideUp 0.2s ease-out;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Анимация появления снизу */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Контейнер для текста */
+.reply-to-message-menu > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 8px;
+}
+
+/* Имя пользователя в меню ответа */
+.reply-to-message-menu-user {
+  font-size: 13px;
+  font-weight: 600;
+  color: #34c759;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: 0.1px;
+}
+
+/* Текст сообщения в меню ответа */
+.reply-to-message-menu-text {
+  font-size: 14px;
+  color: #e5e5e7;
+  margin: 0;
+  line-height: 1.3;
+  max-height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+}
+
+/* Вертикальная полоска как в Telegram */
+.reply-to-message-menu::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #34c759, #2e7d32);
+  border-radius: 3px 0 0 3px;
+}
+
+/* Hover эффект */
+.reply-to-message-menu:hover {
+  background: #3c3c3e;
+  transition: background-color 0.2s ease;
+}
+
+/* Для длинных текстов */
+.reply-to-message-menu-text.truncated {
+  position: relative;
+}
+
+.reply-to-message-menu-text.truncated::after {
+  content: '...';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: #2c2c2e;
+  padding-left: 4px;
+}
+
+/* Иконка ответа (опционально) */
+.reply-to-message-menu::after {
+  content: '↩';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #34c759;
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+/* Кнопка закрытия */
+.reply-to-message-menu-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: none;
+  border: none;
+  color: #8e8e93;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.reply-to-message-menu-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ff453a;
+  transform: scale(1.1);
+}
+
+.reply-to-message-menu-close:active {
+  transform: scale(0.95);
+}
+
+/* Скрываем иконку ответа если есть кнопка закрытия */
+.reply-to-message-menu:has(.reply-to-message-menu-close)::after {
+  display: none;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .reply-to-message-menu {
+    padding: 10px 14px;
+    margin-bottom: 6px;
+  }
+
+  .reply-to-message-menu-user {
+    font-size: 12px;
+  }
+
+  .reply-to-message-menu-text {
+    font-size: 13px;
+    max-height: 32px;
+  }
+
+  .reply-to-message-menu::after {
+    right: 10px;
+    font-size: 14px;
+  }
+
+  .reply-to-message-menu-close {
+    right: 6px;
+    top: 6px;
+    width: 22px;
+    height: 22px;
+    font-size: 18px;
+  }
+}
+
+/* Состояние загрузки */
+.reply-to-message-menu.loading {
+  opacity: 0.7;
+}
+
+.reply-to-message-menu.loading .reply-to-message-menu-text {
+  color: #888;
+  font-style: italic;
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+  .reply-to-message-menu {
+    background: #1c1c1e;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .reply-to-message-menu:hover {
+    background: #2c2c2e;
+  }
+
+  .reply-to-message-menu-text {
+    color: #f2f2f7;
+  }
+}
+
+/* Анимация при клике для закрытия */
+.reply-to-message-menu.closing {
+  animation: slideDown 0.2s ease-in forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}

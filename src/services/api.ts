@@ -31,6 +31,19 @@ class ChatAPI {
     }
   }
 
+  async getMessageById(id: string | null): Promise<Message | null> {
+    try {
+      const url = `${API_BASE_URL}/chat/messages/${id}`;
+
+      const response = await this.api.get(url);
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      return null;
+    }
+  }
+
   async sendMessage(
     message: Omit<Message, "id" | "timestamp">
   ): Promise<Message | null> {
@@ -72,19 +85,6 @@ class ChatAPI {
     } catch (error) {
       console.error("Error editing message:", error);
       return null;
-    }
-  }
-
-  async deleteMessage(messageId: string): Promise<boolean> {
-    try {
-      const response = await this.api.delete(
-        `${API_BASE_URL}/chat/messages/${messageId}`
-      );
-
-      return response.status === 200;
-    } catch (error) {
-      console.error("Error deleting message:", error);
-      return false;
     }
   }
 }

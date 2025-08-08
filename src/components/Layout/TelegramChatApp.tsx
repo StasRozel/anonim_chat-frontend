@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import "./TelegramChatApp.css";
 import { chatAPI } from "../../services/api";
-import MessageComponent from "../Message/Message";
+import MessageComponent from "../Message/Message/Message";
 import { Message } from "../../types/types";
 import { useTelegram } from "../../hooks/useTelegram";
 import {
@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { useSocketRedux } from "../../hooks/useSocket";
 import HeaderChat from "../Chat/HeaderChat/HeaderChat";
 import FooterChat from "../Chat/FooterChat/FooterChat";
-import PinnedMessage from "../Message/PinnedMessage";
+import PinnedMessage from "../Message/PinnedMessage/PinnedMessage";
 
 const TelegramChatApp: React.FC = () => {
   const { user } = useTelegram();

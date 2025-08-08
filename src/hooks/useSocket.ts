@@ -37,12 +37,13 @@ export const useSocketRedux = () => {
     dispatch(socketLeaveChat({ chatId, user }));
   }, [dispatch]);
 
-  const sendMessage = useCallback((chatId: string, text: string, user: TelegramUser) => {
+  const sendMessage = useCallback((chatId: string, replyToMessageId: string | null, text: string, user: TelegramUser) => {
     const message = {
       text: text.trim(),
       user: user,
       type: 'text' as const,
       isPinned: false,
+      replyTo: replyToMessageId ?  replyToMessageId : null, 
     };
     dispatch(socketSendMessage({ chatId, message }));
   }, [dispatch]);

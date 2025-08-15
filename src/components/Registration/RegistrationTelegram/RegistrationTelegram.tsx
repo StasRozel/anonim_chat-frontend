@@ -1,9 +1,9 @@
 import React from 'react';
 import './../Registration.css';
-import { useAppSelector } from '../../../hooks/useRedux';
+import { useTelegram } from '../../../hooks/useTelegram';
 
 export const RegistrationTelegram: React.FC = () => {
-  const { user } = useAppSelector((state) => state.user);
+  const { user } = useTelegram();
 
   return (
     <div className="container">

@@ -15,6 +15,7 @@ import PinnedMessage from "../Message/PinnedMessage/PinnedMessage";
 import { scrollToMessage } from "../../utils/scrollToMessage";
 
 const TelegramChatApp: React.FC = () => {
+  
   const { user } = useTelegram();
   const {
     connect,

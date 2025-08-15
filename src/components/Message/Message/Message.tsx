@@ -6,8 +6,6 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/useRedux";
 import { hideContextMenu, showContextMenu } from "../../../store/slices/contextMenu.slice";
 import "./Message.css";
 import { chatAPI } from "../../../services/api";
-import { setMessage } from "../../../store/slices/replyTo.slice";
-import { get } from "immutable";
 import ReplyToMessage from "../ReplyToMessage/ReplyToMessage";
 
 // Компонент отдельного сообщения
@@ -16,18 +14,20 @@ const MessageComponent: React.FC<{
   currentUser: TelegramUser | null;
   messageRef?: React.RefObject<HTMLDivElement>;
 }> = ({ message, currentUser, messageRef }) => {
-  const isOwnMessage = currentUser && message.user.id === currentUser.id;
+  // Определяем системное сообщение
   const isSystem = message.type === "system";
+  // Только для не-системных сообщений сравниваем user.id
+  const isOwnMessage = !isSystem && currentUser && message.user?.id === currentUser.id;
+
   const internalRef = useRef<HTMLDivElement>(null);
   const [replyToMessage, setReplyToMessage] = useState<Message | null>(null);
-  const { isOpen, position, message: contextMessage } = useAppSelector((state) => state.contextMenu);
-  const { replyToMessageId } = useAppSelector((state) => state.replyTo);
+  const { isOpen, position } = useAppSelector((state) => state.contextMenu);
   const dispatch = useAppDispatch();
 
-  // Используем переданный ref или внутренний
+  // Выбираем корректный ref
   const elementRef = messageRef || internalRef;
 
-  // Функция для генерации цвета аватара на основе ID пользователя
+  // Функция для цвета аватара
   const getAvatarColor = (userId: number) => {
     const colors = [
       "#3b82f6", // blue
@@ -45,45 +45,47 @@ const MessageComponent: React.FC<{
   };
 
   const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault(); // Отменяем стандартное контекстное меню браузера
-
+    e.preventDefault();
     dispatch(showContextMenu({
       position: { x: e.clientX, y: e.clientY },
-      message: message
+      message,
     }));
   };
 
   const handleClickOutside = () => {
-    dispatch(hideContextMenu())
+    dispatch(hideContextMenu());
   };
 
-   useEffect(() => {
-    const getReplyToMessage = async () => {
+  // Загрузка сообщения, на которое отвечаем
+  useEffect(() => {
+    const loadReply = async () => {
       if (message.replyTo) {
         try {
-          const replyMessage = await chatAPI.getMessageById(message.replyTo);
-          setReplyToMessage(replyMessage);
-        } catch (error) {
-          console.error('Error loading reply message:', error);
+          const reply = await chatAPI.getMessageById(message.replyTo);
+          setReplyToMessage(reply);
+        } catch {
+          /* можно логировать через logger */
         }
       }
     };
+    loadReply();
+  }, [message.replyTo]);
 
-    getReplyToMessage();
-  }, [message.replyTo]); 
-
+  // Обработчик кликов вне контекст-меню
   useEffect(() => {
     if (isOpen) {
+
       document.addEventListener("click", handleClickOutside);
-      return () => {
-        document.removeEventListener("click", handleClickOutside);
-      };
+      return () => document.removeEventListener("click", handleClickOutside);
     }
   }, [isOpen]);
 
+  
+
+  // Рендерим системное сообщение без обращения к message.user
   if (isSystem) {
     return (
-      <div 
+      <div
         ref={elementRef}
         className="system-message"
         data-message-id={message.id}
@@ -102,15 +104,19 @@ const MessageComponent: React.FC<{
         data-message-id={message.id}
       >
         <div className="message-content">
-          <div
-            className="message-avatar"
-            style={{ backgroundColor: getAvatarColor(message.user.id) }}
-          >
-            {message.user.first_name[0]}
-          </div>
+          {/* Аватар только для не-системных сообщений с валидным user */}
+          {message.user && (
+            <div
+              className="message-avatar"
+              style={{ backgroundColor: getAvatarColor(message.user.id) }}
+            >
+              {message.user.first_name[0]}
+            </div>
+          )}
           <div className="message-bubble">
             <ReplyToMessage message={message} replyToMessage={replyToMessage}/>
-            {!isOwnMessage && (
+            {/* Автор показывается только если не собственное сообщение */}
+            {!isOwnMessage && message.user && (
               <div className="message-author">{message.user.first_name}</div>
             )}
             <div className="message-text">{message.text}</div>
@@ -118,6 +124,7 @@ const MessageComponent: React.FC<{
           </div>
         </div>
       </div>
+
       {isOpen && (
         <ContextMenu
           user={currentUser}
@@ -129,4 +136,4 @@ const MessageComponent: React.FC<{
   );
 };
 
-export default MessageComponent;
+  export default MessageComponent;

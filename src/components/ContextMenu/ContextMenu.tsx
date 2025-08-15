@@ -3,8 +3,12 @@ import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { useSocketRedux } from "../../hooks/useSocket";
 import { TelegramUser } from "../../types/types";
 import "./ContextMenu.css";
-import { set } from "immutable";
-import { setMessage, setReplyToMessage } from "../../store/slices/replyTo.slice";
+import {
+  setMessage,
+  setReplyToMessage,
+} from "../../store/slices/replyTo.slice";
+import { setInputText } from "../../store/slices/chat.slice";
+import { setEditMessage } from "../../store/slices/message.slice";
 
 interface ContextMenuProps {
   user: TelegramUser | null;
@@ -12,11 +16,16 @@ interface ContextMenuProps {
   onClose: () => void;
 }
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({
+  user,
+  position,
+  onClose,
+}) => {
   const { currentChatId } = useAppSelector((state) => state.chat);
   const dispatch = useAppDispatch();
   const { message } = useAppSelector((state) => state.contextMenu);
-  const { pinMessage, unPinMessage, deleteMessage, deleteAllMessages } = useSocketRedux();
+  const { pinMessage, unPinMessage, deleteMessage, deleteAllMessages } =
+    useSocketRedux();
 
   if (!message) return null;
 
@@ -37,22 +46,31 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) =>
 
   const handleDeleteMessage = () => {
     deleteMessage(currentChatId, message.id);
-  }
+  };
 
   const handleDeleteAllMessages = () => {
     deleteAllMessages(currentChatId);
-  }
+  };
 
   const handleCopyMessage = () => {
     navigator.clipboard.writeText(message.text);
     onClose();
   };
 
+  const hanndleEditMessage = () => {
+    
+    dispatch(setMessage(message));
+    dispatch(setInputText(message.text));
+    dispatch(setEditMessage(true));
+    console.log("message: ", message);
+    onClose();
+  }
+
   return (
-    <div 
+    <div
       className="context-menu"
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: position?.y,
         left: position?.x,
         zIndex: 1000,
@@ -62,27 +80,35 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ user, position, onClose }) =>
       <div className="context-menu-item" onClick={handleReply}>
         📩 Ответить
       </div>
-      
+
       <div className="context-menu-item" onClick={handlePinMessage}>
         {message.isPinned ? "📌 Открепить" : "📌 Закрепить"}
       </div>
-      
+
       <div className="context-menu-item" onClick={handleCopyMessage}>
         📋 Копировать текст
       </div>
 
-      <div className="context-menu-item context-menu-item-danger" onClick={handleDeleteAllMessages}>
-            🗑️ Очистить историю чата
-          </div>
-      
+      <div
+        className="context-menu-item context-menu-item-danger"
+        onClick={handleDeleteAllMessages}
+      >
+        🗑️ Очистить историю чата
+      </div>
+
       {user && message.user.id === user.id && (
         <>
           <div className="context-menu-separator"></div>
-          <div className="context-menu-item context-menu-item-danger" onClick={handleDeleteMessage}>
-            🗑️ Удалить
+          <div className="context-menu-item" onClick={hanndleEditMessage}>
+            ✏️Редактировать
           </div>
 
-          
+          <div
+            className="context-menu-item context-menu-item-danger"
+            onClick={handleDeleteMessage}
+          >
+            🗑️ Удалить
+          </div>
         </>
       )}
     </div>

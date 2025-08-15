@@ -24,6 +24,11 @@ export const socketSendMessage = createAction<{
   message: Omit<Message, 'id' | 'timestamp'>;
 }>('socket/sendMessage');
 
+export const socketEditMessage = createAction<{
+  chatId: string;
+  message: Omit<Message, 'timestamp' |  'user' | 'type' |'isPinned' >;
+}>('socket/editMessage');
+
 export const socketPinMessage = createAction<{
   chatId: string;
   message: Omit<Message, 'user' | 'timestamp' | 'type' |'isPinned' | 'text'>;

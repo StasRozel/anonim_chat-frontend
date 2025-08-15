@@ -1,18 +1,25 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/useRedux";
 import { Send } from "lucide-react";
-import { clearInputText, setInputText } from "../../../store/slices/chat.slice";
+import { clearInputText } from "../../../store/slices/chat.slice";
 import { useSocketRedux } from "../../../hooks/useSocket";
 import { Message } from "../../../types/types";
 import ReplyToMessageMenu from "./ReplyToMessageMenu/ReplyToMessageMenu";
 import { clearReplyToMessage } from "../../../store/slices/replyTo.slice";
+import InputText from "./InputText";
+import { setEditMessage } from "../../../store/slices/message.slice";
 
 const FooterChat: React.FC<{ user: any; isConnected: boolean }> = ({
   user,
   isConnected,
 }) => {
   const { inputText, currentChatId } = useAppSelector((state) => state.chat);
-  const { replyToMessageId, message } = useAppSelector((state) => state.replyTo);
-  const { sendMessage: sendSocketMessage } = useSocketRedux();
+  const { isEditMessage } = useAppSelector((state) => state.editMessage);
+  const { replyToMessageId, message: replyToMessage } = useAppSelector(
+    (state) => state.replyTo
+  );
+  const { message } = useAppSelector((state) => state.contextMenu); 
+  const { sendMessage: sendSocketMessage, editMessage: editSocketMessage } =
+    useSocketRedux();
   const dispatch = useAppDispatch();
 
   const sendMessage = () => {
@@ -23,40 +30,49 @@ const FooterChat: React.FC<{ user: any; isConnected: boolean }> = ({
     dispatch(clearReplyToMessage());
   };
 
-  const handleCloseReply = () => {
+  const editMessage = () => {
+    if (!inputText.trim() || !isConnected || !user) return;
+
+    const messageToEdit = message || replyToMessage;
+    if (!messageToEdit?.id) {
+      console.error("No message to edit");
+      return;
+    }
+
+    console.log("Editing message: ", messageToEdit);
+    editSocketMessage(currentChatId, messageToEdit.id, inputText);
+    dispatch(setEditMessage(false));
+    dispatch(clearInputText());
     dispatch(clearReplyToMessage());
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
+  const handleSubmit = () => {
+    console.log("handleSubmit called, isEditMessage:", isEditMessage);
+    if (isEditMessage) {
+      editMessage();
+    } else {
       sendMessage();
     }
+  };
+
+  const handleCloseReply = () => {
+    dispatch(clearReplyToMessage());
   };
 
   return (
     <div className="chat-input-container">
       {replyToMessageId && (
         <div className="reply-to-message">
-          <ReplyToMessageMenu 
-            message={message as Message} 
+          <ReplyToMessageMenu
+            message={replyToMessage as Message}
             onClose={handleCloseReply}
           />
         </div>
       )}
       <div className="chat-input-wrapper">
-        <input
-          type="text"
-          value={inputText}
-          onChange={(e) => {
-            dispatch(setInputText(e.target.value));
-          }}
-          onKeyPress={handleKeyPress}
-          placeholder="Напишите сообщение..."
-          className="chat-input"
-        />
+        <InputText dispatch={dispatch} handleSubmit={handleSubmit} />
         <button
-          onClick={sendMessage}
+          onClick={handleSubmit}
           disabled={!inputText.trim() || !isConnected}
           className="chat-send-button"
           title={

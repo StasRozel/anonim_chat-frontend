@@ -12,6 +12,7 @@ import { useSocketRedux } from "../../hooks/useSocket";
 import HeaderChat from "../Chat/HeaderChat/HeaderChat";
 import FooterChat from "../Chat/FooterChat/FooterChat";
 import PinnedMessage from "../Message/PinnedMessage/PinnedMessage";
+import { scrollToMessage } from "../../utils/scrollToMessage";
 
 const TelegramChatApp: React.FC = () => {
   const { user } = useTelegram();
@@ -29,10 +30,8 @@ const TelegramChatApp: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [currentPinnedIndex, setCurrentPinnedIndex] = useState(0);
   
-  // Создаем refs для каждого сообщения
   const messageRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement> }>({});
 
-  // Мемоизируем закрепленные сообщения
   const pinnedMessages = useMemo(() => 
     messages.filter((msg) => msg.isPinned),
     [messages]
@@ -66,7 +65,6 @@ const TelegramChatApp: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Создаем refs для новых сообщений
   useEffect(() => {
     messages.forEach(message => {
       if (!messageRefs.current[message.id]) {
@@ -74,44 +72,13 @@ const TelegramChatApp: React.FC = () => {
       }
     });
   }, [messages]);
-
-  // Функция для скролла к конкретному сообщению
-  const scrollToMessage = (messageId: string) => {
-    const messageRef = messageRefs.current[messageId];
-    if (messageRef?.current) {
-      messageRef.current.scrollIntoView({ 
-        behavior: "smooth", 
-        block: "center" // Центрируем сообщение на экране
-      });
-      
-      // Добавляем визуальный эффект выделения
-      messageRef.current.classList.add('message-highlighted');
-      setTimeout(() => {
-        messageRef.current?.classList.remove('message-highlighted');
-      }, 2000);
-    } else {
-      // Если ref не найден, используем data-атрибут
-      const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
-      if (messageElement) {
-        messageElement.scrollIntoView({ 
-          behavior: "smooth", 
-          block: "center" 
-        });
-        
-        messageElement.classList.add('message-highlighted');
-        setTimeout(() => {
-          messageElement.classList.remove('message-highlighted');
-        }, 2000);
-      }
-    }
-  };
+  
 
   const handlePinnedMessageClick = () => {
     if (pinnedMessages.length > 0) {
       const currentMessage = pinnedMessages[currentPinnedIndex];
-      scrollToMessage(currentMessage.id);
+      scrollToMessage(messageRefs, currentMessage.id);
       
-      // Переходим к следующему закрепленному сообщению для следующего клика
       setCurrentPinnedIndex((prevIndex) => (prevIndex + 1) % pinnedMessages.length);
     }
   };
@@ -122,7 +89,6 @@ const TelegramChatApp: React.FC = () => {
     <div className="chat-container">
       <HeaderChat user={user} isConnected={isConnected} />
       
-      {/* Показываем закрепленное сообщение */}
       {pinnedMessages.length > 0 && currentPinnedMessage && (
         <div className="pinned-message-container">
           <PinnedMessage 

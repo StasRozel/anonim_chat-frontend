@@ -19,6 +19,7 @@ import {
   socketUnPinMessage,
   socketDeleteMessage,
   socketDeleteAllMessages,
+  socketEditMessage,
 } from "../actions/socket.actions";
 import {
   setConnectionStatus,
@@ -76,6 +77,12 @@ export const socketMiddleware: Middleware =
           console.log("New message received:", message);
           dispatch(socketMessageReceived(message));
           dispatch(addMessage(message));
+        });
+
+        socket.on("edit-message", async (message) => {
+          console.log("Edit message:", message);
+          const oldMessages = await chatAPI.getMessages();
+          dispatch(setMessages(oldMessages));
         });
 
         socket.on("pin-message", async (message) => {
@@ -158,6 +165,16 @@ export const socketMiddleware: Middleware =
           const { chatId, message } = action.payload;
           socket.emit("send-message", { chatId, message });
           console.log("Sending message:", message.text);
+        }
+        break;
+      }
+
+      case socketEditMessage.type: {
+        if (socket?.connected) {
+          const { chatId, message } = action.payload;
+          console.log("Aboba:", message);
+          socket.emit("edit-message", { chatId, message });
+          console.log("Editing message:", message.text);
         }
         break;
       }

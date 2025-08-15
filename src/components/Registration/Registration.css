@@ -1,0 +1,132 @@
+.chat-container {
+  background-color: #0f172a;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  font-family: sans-serif;
+}
+
+.header {
+  background-color: #1e293b;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #334155;
+}
+
+.title {
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #22c55e;
+}
+
+
+.input-container {
+  background-color: none;
+  padding: 10px;
+  display: flex;
+}
+
+.input {
+  flex: 1;
+  background-color: #334155;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+}
+
+/* Стили для компонентов регистрации */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.input-container {
+  display: flex;
+  gap: 12px;
+}
+
+.input-field {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: white;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #34c759;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.1);
+}
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.reload {
+  background: rgba(52, 199, 89, 0.2);
+  border: 1px solid rgba(52, 199, 89, 0.3);
+  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 18px;
+}
+
+.reload:hover {
+  background: rgba(52, 199, 89, 0.3);
+  transform: scale(1.05);
+}
+
+.reload:active {
+  transform: scale(0.95);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.button-container button {
+  background: linear-gradient(135deg, #34c759, #2e7d32);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 32px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
+}
+
+.button-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(52, 199, 89, 0.4);
+}
+
+.button-container button:active {
+  transform: translateY(0);
+}

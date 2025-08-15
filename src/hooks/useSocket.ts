@@ -11,6 +11,7 @@ import {
   socketUnPinMessage,
   socketDeleteMessage,
   socketDeleteAllMessages,
+  socketEditMessage,
 } from '../store/actions/socket.actions';
 import { TelegramUser } from '../types/types';
 import { is } from 'immutable';
@@ -46,6 +47,14 @@ export const useSocketRedux = () => {
       replyTo: replyToMessageId ?  replyToMessageId : null, 
     };
     dispatch(socketSendMessage({ chatId, message }));
+  }, [dispatch]);
+
+  const editMessage = useCallback((chatId: string, id: string, text: string) => {
+    const message = {
+      id,
+      text: text.trim(),
+    };
+    dispatch(socketEditMessage({ chatId, message }));
   }, [dispatch]);
 
   const pinMessage = useCallback((chatId: string, id: string) => {
@@ -86,6 +95,7 @@ export const useSocketRedux = () => {
     joinChat,
     leaveChat,
     sendMessage,
+    editMessage,
     pinMessage,
     unPinMessage,
     deleteMessage,

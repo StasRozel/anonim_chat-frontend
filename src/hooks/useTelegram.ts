@@ -13,6 +13,8 @@ export const useTelegram = () => {
       tg.ready();
 
       const user = tg.initDataUnsafe?.user;
+
+      console.log("Telegram user data:", user);
       
       if (user) {
         dispatch(setUser(tg.initDataUnsafe.user));

@@ -4,18 +4,20 @@ import { RegistrationCustom } from '../RegistrationCustom/RegistrationCustom';
 import { RegistrationGenerate } from '../RegistrationGenerate/RegistrationGenerate';
 import { RegistrationTelegram } from '../RegistrationTelegram/RegistrationTelegram';
 import Modal from '../../Modal/Modal';
+import { TelegramUser } from '../../../types/types';
+import { useAppSelector } from '../../../hooks/useRedux';
 
 type Mode = 'telegram' | 'custom' | 'generate';
 
 interface RegistrationSwitcherProps {
-  isOpen: boolean;
   onClose: () => void;
 }
 
 export const RegistrationSwitcher: React.FC<RegistrationSwitcherProps> = ({
-  isOpen,
   onClose
 }) => {
+  const { user } = useAppSelector((state) => state.user);
+  const { isRegistrationOpen } = useAppSelector((state) => state.modal);
   const [currentMode, setCurrentMode] = useState<Mode>('telegram');
 
   const getModalTitle = () => {
@@ -33,7 +35,7 @@ export const RegistrationSwitcher: React.FC<RegistrationSwitcherProps> = ({
 
   return (
     <Modal 
-      isOpen={isOpen} 
+      isOpen={isRegistrationOpen} 
       onClose={onClose} 
       title={getModalTitle()}
       size="medium"
@@ -61,9 +63,9 @@ export const RegistrationSwitcher: React.FC<RegistrationSwitcherProps> = ({
         </div>
         
         <div className="tab-content">
-          {currentMode === 'telegram' && <RegistrationTelegram />}
-          {currentMode === 'custom' && <RegistrationCustom />}
-          {currentMode === 'generate' && <RegistrationGenerate />}
+          {currentMode === 'telegram' && <RegistrationTelegram user={user as TelegramUser}/>}
+          {currentMode === 'custom' && <RegistrationCustom user={user as TelegramUser}/>}
+          {currentMode === 'generate' && <RegistrationGenerate user={user as TelegramUser}/>}
         </div>
       </div>
     </Modal>

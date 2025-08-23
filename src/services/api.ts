@@ -1,4 +1,3 @@
-import { socketLeaveChat } from './../store/actions/socket.actions';
 import axios from "axios";
 import { Message } from "../types/types";
 

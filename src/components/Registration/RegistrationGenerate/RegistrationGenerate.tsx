@@ -1,16 +1,16 @@
 import React from "react";
 import './../Registration.css';
 import { generateRandomUser } from "../../../utils/generateRandomUser";
-import { useTelegram } from "../../../hooks/useTelegram";
 import { useAppDispatch } from "../../../hooks/useRedux";
-import { setUser } from "../../../store/slices/user.slice";
+import { setChatNickname } from "../../../store/slices/user.slice";
+import { TelegramUser } from "../../../types/types";
+import { ButtonRegistration } from "../ButtonRegistration";
 
-export const RegistrationGenerate: React.FC = () => {
-  const { user } = useTelegram();
+export const RegistrationGenerate: React.FC<{user: TelegramUser}> = ({user}) => {
   const dispatch = useAppDispatch();
 
   const handleReload = () => {
-    dispatch(setUser(generateRandomUser()));
+    dispatch(setChatNickname(generateRandomUser()));
   };
 
   return (
@@ -19,7 +19,7 @@ export const RegistrationGenerate: React.FC = () => {
         <input
           type="text"
           placeholder="Введите имя"
-          value={user?.first_name}
+          value={user?.chat_nickname || ''}
           onChange={(e) => {
             e.target.value;
           }}
@@ -29,9 +29,7 @@ export const RegistrationGenerate: React.FC = () => {
           🔃
         </button>
       </div>
-      <div className="button-container">
-        <button>Зарегистрироваться</button>
-      </div>
+      <ButtonRegistration user={user}/>
     </div>
   );
 };

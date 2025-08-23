@@ -1,45 +1,29 @@
-import React, { useState } from 'react';
-import './App.css';
-import TelegramChatApp from './components/Layout/TelegramChatApp';
-import { RegistrationSwitcher } from './components/Registration/RegistrationSwitcher/RegistrationSwitcher';
+import "./App.css";
+import TelegramChatApp from "./components/Layout/TelegramChatApp";
+import { RegistrationSwitcher } from "./components/Registration/RegistrationSwitcher/RegistrationSwitcher";
+import { useTelegram } from "./hooks/useTelegram";
+import { useAppDispatch } from "./hooks/useRedux";
+import { closeRegistrationModal } from "./store/slices/modal.slice";
+
 
 function App() {
-  const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated } = useTelegram();
+  const dispatch = useAppDispatch();
 
   const handleRegistrationClose = () => {
-    setIsRegistrationOpen(false);
-    setIsAuthenticated(true);
+    dispatch(closeRegistrationModal());
   };
 
-  const handleOpenRegistration = () => {
-    setIsRegistrationOpen(true);
-  };
 
   return (
     <div className="App">
       {isAuthenticated ? (
-        // Обычный чат во весь экран после авторизации
         <TelegramChatApp />
       ) : (
-        // Welcome screen только если пользователь не авторизован
-        <div className="welcome-screen">
-          <h1>Добро пожаловать в анонимный чат!</h1>
-          <p>Для входа в чат выберите способ авторизации</p>
-          <button 
-            className="auth-button"
-            onClick={handleOpenRegistration}
-          >
-            Войти в чат
-          </button>
-        </div>
+        <RegistrationSwitcher
+          onClose={handleRegistrationClose}
+        />
       )}
-      
-      {/* Модальное окно регистрации */}
-      <RegistrationSwitcher 
-        isOpen={isRegistrationOpen}
-        onClose={handleRegistrationClose}
-      />
     </div>
   );
 }

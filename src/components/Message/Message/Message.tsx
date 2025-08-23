@@ -7,6 +7,7 @@ import { hideContextMenu, showContextMenu } from "../../../store/slices/contextM
 import "./Message.css";
 import { chatAPI } from "../../../services/api";
 import ReplyToMessage from "../ReplyToMessage/ReplyToMessage";
+import { getAvatarColor } from "../../../store/slices/avatar.slice";
 
 // Компонент отдельного сообщения
 const MessageComponent: React.FC<{
@@ -22,27 +23,11 @@ const MessageComponent: React.FC<{
   const internalRef = useRef<HTMLDivElement>(null);
   const [replyToMessage, setReplyToMessage] = useState<Message | null>(null);
   const { isOpen, position } = useAppSelector((state) => state.contextMenu);
+  const { color } = useAppSelector((state) => state.avatarColor);
   const dispatch = useAppDispatch();
 
   // Выбираем корректный ref
   const elementRef = messageRef || internalRef;
-
-  // Функция для цвета аватара
-  const getAvatarColor = (userId: number) => {
-    const colors = [
-      "#3b82f6", // blue
-      "#ef4444", // red
-      "#10b981", // green
-      "#f59e0b", // amber
-      "#8b5cf6", // purple
-      "#ec4899", // pink
-      "#06b6d4", // cyan
-      "#84cc16", // lime
-      "#f97316", // orange
-      "#6366f1", // indigo
-    ];
-    return colors[userId % colors.length];
-  };
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -94,7 +79,7 @@ const MessageComponent: React.FC<{
       </div>
     );
   }
-
+getAvatarColor(message.user.id)
   return (
     <>
       <div
@@ -108,16 +93,15 @@ const MessageComponent: React.FC<{
           {message.user && (
             <div
               className="message-avatar"
-              style={{ backgroundColor: getAvatarColor(message.user.id) }}
+              style={{ backgroundColor:  color}}
             >
-              {message.user.first_name[0]}
+              {message.user.chat_nickname?.charAt(0).toUpperCase() || message.user.first_name.charAt(0).toUpperCase()}
             </div>
           )}
           <div className="message-bubble">
             <ReplyToMessage message={message} replyToMessage={replyToMessage}/>
-            {/* Автор показывается только если не собственное сообщение */}
             {!isOwnMessage && message.user && (
-              <div className="message-author">{message.user.first_name}</div>
+              <div className="message-author">{message.user.chat_nickname || message.user.first_name}</div>
             )}
             <div className="message-text">{message.text}</div>
             <div className="message-time">{formatTime(message.timestamp)}</div>

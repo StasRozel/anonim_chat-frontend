@@ -3,6 +3,7 @@ export interface TelegramUser {
   first_name: string;
   last_name?: string;
   username?: string;
+  chat_nickname?: string;
   photo_url?: string;
 }
 

@@ -1,10 +1,13 @@
+import { is } from 'immutable';
 export interface TelegramUser {
   id: number;
   first_name: string;
-  last_name?: string;
-  username?: string;
+  last_name: string;
+  username: string;
   chat_nickname?: string;
-  photo_url?: string;
+  is_banned?: boolean;
+  is_admin?: boolean;
+  photo_url: string;
 }
 
 export interface Message {

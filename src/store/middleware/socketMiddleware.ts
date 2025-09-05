@@ -15,11 +15,14 @@ import {
   socketSendMessage,
   socketPing,
   socketPinMessage,
-  socketMessagePinned,
   socketUnPinMessage,
   socketDeleteMessage,
   socketDeleteAllMessages,
   socketEditMessage,
+  socketBanUser,
+  socketUnbanUser,
+  socketSetAdmin,
+  socketDeleteAdmin,
 } from "../actions/socket.actions";
 import {
   setConnectionStatus,
@@ -32,6 +35,7 @@ import {
   setPong,
 } from "../slices/socket.slice";
 import { chatAPI } from "../../services/api";
+import { updUser } from "../slices/users.slice";
 
 let socket: Socket | null = null;
 
@@ -117,6 +121,26 @@ export const socketMiddleware: Middleware =
           console.log("User left:", message);
           dispatch(socketUserLeft(message));
           dispatch(addMessage(message));
+        });
+
+        socket.on("ban-user", (data) => {
+          console.log("user banned:", data);
+          dispatch(updUser(data));
+        });
+
+        socket.on("unban-user", (data) => {
+          console.log("user unbanned:", data);
+          dispatch(updUser(data));
+        });
+
+        socket.on("set-admin", (data) => {
+          console.log("user banned:", data);
+          dispatch(updUser(data));
+        });
+
+        socket.on("delete-admin", (data) => {
+          console.log("user unbanned:", data);
+          dispatch(updUser(data));
         });
 
         socket.on("error", (error) => {
@@ -211,6 +235,42 @@ export const socketMiddleware: Middleware =
           const chatId = action.payload;
           socket.emit("delete-all-messages", chatId);
           console.log("Delete all messages for chat:", chatId);
+        }
+        break;
+      }
+
+      case socketBanUser.type: {
+        if (socket?.connected) {
+          const { userId } = action.payload;
+          socket.emit("ban-user", { userId });
+          console.log("Banned user with id: ", userId);
+        }
+        break;
+      }
+
+      case socketUnbanUser.type: {
+        if (socket?.connected) {
+          const { userId } = action.payload;
+          socket.emit("unban-user", { userId });
+          console.log("Unbanned user with id:", userId);
+        }
+        break;
+      }
+
+      case socketSetAdmin.type: {
+        if (socket?.connected) {
+          const { userId } = action.payload;
+          socket.emit("set-admin", { userId });
+          console.log("Banned user with id: ", userId);
+        }
+        break;
+      }
+
+      case socketDeleteAdmin.type: {
+        if (socket?.connected) {
+          const { userId } = action.payload;
+          socket.emit("delete-admin", { userId });
+          console.log("Unbanned user with id:", userId);
         }
         break;
       }

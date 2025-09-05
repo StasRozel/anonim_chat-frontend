@@ -8,17 +8,7 @@ interface ChatState {
 }
 
 const initialState: ChatState = {
-  messages: [
-    {
-      id: '1',
-      text: 'Добро пожаловать в чат! 👋',
-      user: { id: 0, first_name: 'Система' },
-      timestamp: new Date().toISOString(),
-      type: 'system',
-      isPinned: false,
-      replyTo: null
-    }
-  ],
+  messages: [],
   inputText: '',
   isConnected: false,
   currentChatId: 'general-chat'

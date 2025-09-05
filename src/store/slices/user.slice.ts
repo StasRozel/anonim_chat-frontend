@@ -1,10 +1,11 @@
-import { is } from 'immutable';
 import { createSlice } from '@reduxjs/toolkit';
 import { TelegramUser } from './../../types/types';
 
 interface UserState {
   user: TelegramUser | null;
   isAuthenticated: boolean;
+  isAdmin?: boolean;
+  isSuperAdmin?: boolean;
 }
 
 const initialState: UserState =  {

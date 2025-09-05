@@ -17,14 +17,11 @@ import { scrollToMessage } from "../../utils/scrollToMessage";
 const TelegramChatApp: React.FC = () => {
   
   const { user } = useTelegram();
-  const {
-    connect,
-    disconnect,
-  } = useSocketRedux();
+
 
   const dispatch = useAppDispatch();
 
-  const { messages, isConnected, currentChatId } = useAppSelector(
+  const { messages, isConnected } = useAppSelector(
     (state) => state.chat
   );
 
@@ -37,18 +34,6 @@ const TelegramChatApp: React.FC = () => {
     messages.filter((msg) => msg.isPinned),
     [messages]
   );
-
-  useEffect(() => {
-    if (user) {
-      const serverUrl =
-        process.env.REACT_APP_API_URL || "http://localhost:3001/";
-      connect(serverUrl, user, currentChatId);
-    }
-
-    return () => {
-      disconnect();
-    };
-  }, [user, currentChatId, connect, disconnect]);
 
   useEffect(() => {
     const fetchMessages = async () => {

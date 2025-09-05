@@ -12,9 +12,12 @@ import {
   socketDeleteMessage,
   socketDeleteAllMessages,
   socketEditMessage,
+  socketBanUser,
+  socketUnbanUser,
+  socketSetAdmin,
+  socketDeleteAdmin,
 } from '../store/actions/socket.actions';
 import { TelegramUser } from '../types/types';
-import { is } from 'immutable';
 
 export const useSocketRedux = () => {
   const dispatch = useAppDispatch();
@@ -62,22 +65,40 @@ export const useSocketRedux = () => {
       id: id,
     };
     dispatch(socketPinMessage({chatId, message}));
-  }, [dispatch])
+  }, [dispatch]);
 
   const unPinMessage = useCallback((chatId: string, id: string) => {
     const message = {
       id: id,
     };
     dispatch(socketUnPinMessage({chatId, message}));
-  }, [dispatch])
+  }, [dispatch]);
 
   const deleteMessage = useCallback((chatId: string, messageId: string) => {
     dispatch(socketDeleteMessage({chatId, messageId}));
-  }, [dispatch])
+  }, [dispatch]);
 
   const deleteAllMessages = useCallback((chatId: string) => {
     dispatch(socketDeleteAllMessages(chatId));
-  }, [dispatch])
+  }, [dispatch]);
+
+  const banUser = useCallback((user: TelegramUser) => {
+    console.log("Dispatching banUser action for:", user.id); // Добавьте этот лог
+    dispatch(socketBanUser({ userId: user.id  }));
+  }, [dispatch]);
+
+  const unbanUser = useCallback((user: TelegramUser) => {
+    dispatch(socketUnbanUser({ userId: user.id }));
+  }, [dispatch]);
+
+  const setAdmin = useCallback((user: TelegramUser) => {
+    console.log("Dispatching banUser action for:", user.id); // Добавьте этот лог
+    dispatch(socketSetAdmin({ userId: user.id  }));
+  }, [dispatch]);
+
+  const deleteAdmin = useCallback((user: TelegramUser) => {
+    dispatch(socketDeleteAdmin({ userId: user.id }));
+  }, [dispatch]);
 
   const ping = useCallback(() => {
     dispatch(socketPing());
@@ -100,6 +121,10 @@ export const useSocketRedux = () => {
     unPinMessage,
     deleteMessage,
     deleteAllMessages,
+    banUser,
+    unbanUser,
+    setAdmin,
+    deleteAdmin,
     ping,
   };
 };

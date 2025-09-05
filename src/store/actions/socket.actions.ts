@@ -44,6 +44,22 @@ export const socketDeleteMessage = createAction<{
   messageId: string;
 }>('socket/deleteMessage');
 
+export const socketBanUser = createAction<{
+  userId: number;
+}>('socket/banUser');
+
+export const socketUnbanUser = createAction<{
+  userId: number;
+}>('socket/unBanUser');
+
+export const socketSetAdmin = createAction<{
+  userId: number;
+}>('socket/setAdmin');
+
+export const socketDeleteAdmin = createAction<{
+  userId: number;
+}>('socket/deleteAdmin');
+
 export const socketDeleteAllMessages = createAction<string>('socket/deleteAllMessages');
 
 export const socketPing = createAction('socket/ping');

@@ -6,6 +6,7 @@ import contextMenuReducer from './slices/contextMenu.slice';
 import replyToReducer from './slices/replyTo.slice';
 import MessageSliceReducer from './slices/message.slice';
 import userReducer from './slices/user.slice';
+import usersReducer from './slices/users.slice';
 import modalReducer from './slices/modal.slice';
 import { socketMiddleware } from './middleware/socketMiddleware';
 
@@ -18,6 +19,7 @@ export const store = configureStore({
     replyTo: replyToReducer,
     editMessage: MessageSliceReducer,
     user: userReducer,
+    users: usersReducer,
     modal: modalReducer,
   },
   middleware: (getDefaultMiddleware) =>

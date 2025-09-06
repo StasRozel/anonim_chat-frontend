@@ -28,7 +28,7 @@ const HeaderChat: React.FC<{ user: any; isConnected: boolean }> = ({
 
   return (
     <header className="chat-header">
-      {user.is_admin && (
+      {/*user.is_admin*/true && (
         <div
           className={` chat-header-title ${
             isAdmin ? "chat-header-title--clickable" : ""

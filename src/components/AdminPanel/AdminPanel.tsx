@@ -51,10 +51,8 @@ export const AdminPanel: React.FC = () => {
 
   const handleSetRemoveAdmin = (user: TelegramUser) => {
     if (user.is_admin) {
-      console.log(users);
       deleteAdmin(user);
     } else {
-      console.log(users);
       setAdmin(user);
     }
   };

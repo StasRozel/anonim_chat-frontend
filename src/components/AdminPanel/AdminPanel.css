@@ -158,6 +158,8 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .user-card {
@@ -287,4 +289,16 @@
 
 .btn--positive:hover {
   background: #059669;
+}
+
+.btn--disabled {
+  background: #d1d5db;
+  color: #000000;
+  cursor: not-allowed;
+}
+
+.btn--disabled:hover {
+  background: #868686; 
+  color: #000000;
+  cursor: not-allowed;
 }

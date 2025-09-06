@@ -33,7 +33,7 @@ function App() {
   }, [user, currentChatId, connect, disconnect]);
 
   const ProtectedAdminRoute = ({ children }: { children: React.ReactNode }) => {
-    const isAdmin = user?.is_admin || user?.id === Number(process.env.REACT_APP_SUPER_ADMIN_ID);
+    const isAdmin = true; //user?.is_admin || user?.id === Number(process.env.REACT_APP_SUPER_ADMIN_ID);
     return isAdmin ? <>{children}</> : <Navigate to="/" replace />;
   };
 

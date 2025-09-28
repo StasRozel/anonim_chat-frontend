@@ -9,6 +9,7 @@ import { chatAPI } from "../../../services/chat.api";
 import ReplyToMessage from "../ReplyToMessage/ReplyToMessage";
 import { getAvatarColor } from "../../../store/slices/avatar.slice";
 import FileMessage from "../../FIleUpload/FileMessage";
+import { User } from "lucide-react";
 
 // Компонент отдельного сообщения
 const MessageComponent: React.FC<{
@@ -96,7 +97,7 @@ getAvatarColor(message.user.id)
               className="message-avatar"
               style={{ backgroundColor:  color}}
             >
-              {"A"}
+              {message.user.chat_nickname ? message.user.chat_nickname[0] : message.user.first_name ? message.user.first_name[0] : <User size={20}/>}
             </div>
           )}
           <div className="message-bubble">

@@ -5,9 +5,10 @@ import ContextMenu from "../../ContextMenu/ContextMenu";
 import { useAppDispatch, useAppSelector } from "../../../hooks/useRedux";
 import { hideContextMenu, showContextMenu } from "../../../store/slices/contextMenu.slice";
 import "./Message.css";
-import { chatAPI } from "../../../services/api";
+import { chatAPI } from "../../../services/chat.api";
 import ReplyToMessage from "../ReplyToMessage/ReplyToMessage";
 import { getAvatarColor } from "../../../store/slices/avatar.slice";
+import FileMessage from "../../FIleUpload/FileMessage";
 
 // Компонент отдельного сообщения
 const MessageComponent: React.FC<{
@@ -95,7 +96,7 @@ getAvatarColor(message.user.id)
               className="message-avatar"
               style={{ backgroundColor:  color}}
             >
-              {message.user.chat_nickname?.charAt(0).toUpperCase() || message.user.first_name.charAt(0).toUpperCase()}
+              {"A"}
             </div>
           )}
           <div className="message-bubble">
@@ -103,6 +104,7 @@ getAvatarColor(message.user.id)
             {!isOwnMessage && message.user && (
               <div className="message-author">{message.user.chat_nickname || message.user.first_name}</div>
             )}
+            {message.attachment && (<FileMessage fileName={message.attachment?.originalName} fileSize={message.attachment?.size} fileType={message.attachment?.mimetype} fileUrl={message.attachment.url}/>)}
             <div className="message-text">{message.text}</div>
             <div className="message-time">{formatTime(message.timestamp)}</div>
           </div>

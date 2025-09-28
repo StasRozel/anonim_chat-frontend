@@ -1,0 +1,114 @@
+.modal-image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.modal-image-container {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  cursor: default;
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-image-download,
+.modal-image-close {
+  position: absolute;
+  top: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-image-download:hover,
+.modal-image-close:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-image-download {
+  right: 60px;
+}
+
+.modal-image-close {
+  right: 15px;
+}
+
+.modal-image-download:active,
+.modal-image-close:active {
+  transform: scale(0.95);
+}
+
+/* Анимация появления */
+.modal-image-overlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-image-container {
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .modal-image-download,
+  .modal-image-close {
+    top: 10px;
+    width: 35px;
+    height: 35px;
+  }
+
+  .modal-image-download {
+    right: 55px;
+  }
+
+  .modal-image-close {
+    right: 10px;
+  }
+
+  .modal-image {
+    max-width: 95vw;
+    max-height: 85vh;
+  }
+}

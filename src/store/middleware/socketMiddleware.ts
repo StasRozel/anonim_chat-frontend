@@ -34,7 +34,7 @@ import {
   setConnectionError,
   setPong,
 } from "../slices/socket.slice";
-import { chatAPI } from "../../services/api";
+import { chatAPI } from "../../services/chat.api";
 import { updUser } from "../slices/users.slice";
 
 let socket: Socket | null = null;

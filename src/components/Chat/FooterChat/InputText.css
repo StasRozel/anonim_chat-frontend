@@ -1,0 +1,61 @@
+/* InputText component styles */
+.chat-input-with-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.chat-input {
+    width: 90%;
+    flex: 1;
+    border: 1px solid #d1d5db;
+    border-radius: 24px;
+    padding: 10px 16px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+    background-color: #f9fafb;
+}
+
+.chat-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background-color: #ffffff;
+}
+
+.chat-input::placeholder {
+    color: #9ca3af;
+}
+
+/* Mobile responsive styles for InputText */
+@media (max-width: 768px) {
+    .chat-input {
+        font-size: 16px;
+        /* Предотвращает зум на iOS */
+    }
+}
+
+@media (max-width: 480px) {
+    .chat-input {
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+}
+
+/* Эффекты для темной темы */
+@media (prefers-color-scheme: dark) {
+    .chat-input {
+        background-color: #4b5563;
+        border-color: #6b7280;
+        color: #f9fafb;
+    }
+
+    .chat-input:focus {
+        background-color: #374151;
+    }
+
+    .chat-input::placeholder {
+        color: #9ca3af;
+    }
+}

@@ -188,7 +188,6 @@ export const useTelegram = () => {
         setLoading(false);
       }
     };
-
     initializeTelegram();
   }, [dispatch]);
 

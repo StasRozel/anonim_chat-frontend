@@ -3,7 +3,7 @@ import './RegistrationSwitcher.css';
 import { RegistrationCustom } from '../RegistrationCustom/RegistrationCustom';
 import { RegistrationGenerate } from '../RegistrationGenerate/RegistrationGenerate';
 import { RegistrationTelegram } from '../RegistrationTelegram/RegistrationTelegram';
-import Modal from '../../Modal/Modal';
+import Modal from '../../ModalWindows/ModalRegistration/ModalRegistration';
 import { TelegramUser } from '../../../types/types';
 import { useAppSelector } from '../../../hooks/useRedux';
 

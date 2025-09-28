@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import "./TelegramChatApp.css";
-import { chatAPI } from "../../services/api";
+import { chatAPI } from "../../services/chat.api";
 import MessageComponent from "../Message/Message/Message";
 import { Message } from "../../types/types";
 import { useTelegram } from "../../hooks/useTelegram";

@@ -192,69 +192,6 @@ html, body {
 }
 
 /* Поле ввода */
-.chat-input-container {
-  background-color: #ffffff;
-  border-top: 1px solid #e5e7eb;
-  padding: 12px 16px;
-  box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.05);
-}
-
-.chat-input-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.chat-input {
-  flex: 1;
-  border: 1px solid #d1d5db;
-  border-radius: 24px;
-  padding: 10px 16px;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
-  background-color: #f9fafb;
-}
-
-.chat-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  background-color: #ffffff;
-}
-
-.chat-input::placeholder {
-  color: #9ca3af;
-}
-
-.chat-send-button {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  outline: none;
-}
-
-.chat-send-button:hover:not(:disabled) {
-  background-color: #2563eb;
-  transform: scale(1.05);
-}
-
-.chat-send-button:active {
-  transform: scale(0.95);
-}
-
-.chat-send-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
 
 /* Индикатор подключения */
 .connection-status {
@@ -290,16 +227,8 @@ html, body {
     height: calc(100vh - 120px);
   }
   
-  .chat-input-container {
-    padding: 10px 12px;
-  }
-  
   .message-content {
     max-width: calc(100vw - 60px);
-  }
-  
-  .chat-input {
-    font-size: 16px; /* Предотвращает зум на iOS */
   }
 }
 
@@ -317,10 +246,6 @@ html, body {
   .chat-messages {
     padding: 8px;
     height: calc(100vh - 110px);
-  }
-  
-  .chat-input-container {
-    padding: 8px 10px;
   }
   
   .chat-header {
@@ -351,26 +276,12 @@ html, body {
   .message-text {
     font-size: 13px;
   }
-  
-  .chat-input {
-    padding: 8px 12px;
-    font-size: 16px;
-  }
-  
-  .chat-send-button {
-    width: 36px;
-    height: 36px;
-  }
 }
 
 /* Для очень маленьких экранов */
 @media (max-width: 360px) {
   .chat-messages {
     padding: 6px;
-  }
-  
-  .chat-input-container {
-    padding: 6px 8px;
   }
   
   .message-content {
@@ -387,10 +298,6 @@ html, body {
   
   .chat-messages {
     height: calc(100vh - 100px);
-  }
-  
-  .chat-input-container {
-    padding: 6px 12px;
   }
 }
 
@@ -415,25 +322,6 @@ html, body {
   
   .message {
     margin-bottom: 8px;
-  }
-  
-  .chat-input-container {
-    padding: 4px 8px;
-  }
-}
-
-/* Анимации для отправки сообщений */
-.sending-animation {
-  opacity: 0.7;
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
   }
 }
 
@@ -512,24 +400,5 @@ html, body {
   .system-message-content {
     background-color: #4b5563;
     color: #d1d5db;
-  }
-  
-  .chat-input-container {
-    background-color: #374151;
-    border-top-color: #4b5563;
-  }
-  
-  .chat-input {
-    background-color: #4b5563;
-    border-color: #6b7280;
-    color: #f9fafb;
-  }
-  
-  .chat-input:focus {
-    background-color: #374151;
-  }
-  
-  .chat-input::placeholder {
-    color: #9ca3af;
   }
 }

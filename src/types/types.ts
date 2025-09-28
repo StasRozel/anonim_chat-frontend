@@ -1,4 +1,3 @@
-import { is } from 'immutable';
 export interface TelegramUser {
   id: number;
   first_name: string;
@@ -8,6 +7,17 @@ export interface TelegramUser {
   is_banned?: boolean;
   is_admin?: boolean;
   photo_url: string;
+}
+
+export interface MessageAttachment {
+  id: string;
+  originalName: string;
+  filename: string;
+  url: string;
+  thumbnailUrl?: string | null;
+  mimetype: string;
+  size: number;
+  uploadedAt: string;
 }
 
 export interface Message {
@@ -21,6 +31,7 @@ export interface Message {
   replyTo?: string | null;
   edited?: boolean;
   editedAt?: string;
+  attachment?: MessageAttachment | null;
 }
 
 export interface SendMessageData {
@@ -33,6 +44,9 @@ export interface JoinChatData {
   user: TelegramUser;
 }
 
+
+
+
 declare global {
   interface Window {
     Telegram?: {
@@ -40,6 +54,8 @@ declare global {
         ready: () => void;
         expand: () => void;
         setHeaderColor: (color: string) => void;
+        downloadFile?: (params: { url: string; file_name: string }, callback?: (success: boolean) => void) => void;
+        openLink?: (url: string) => void;
         initDataUnsafe: {
           user?: TelegramUser;
           chat_instance?: string;

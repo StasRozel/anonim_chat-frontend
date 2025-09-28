@@ -81,6 +81,14 @@
   color: #000;
 }
 
+/* Вложения в сообщениях */
+.message-attachments {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .message-time {
   font-size: 11px;
   color: #999;

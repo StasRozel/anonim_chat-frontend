@@ -1,0 +1,203 @@
+/* FooterChat component styles */
+.chat-input-container {
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  padding: 12px 12px;
+  box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.chat-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-send-button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.chat-send-button:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
+.chat-send-button:active {
+  transform: scale(0.95);
+}
+
+.chat-send-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Selected files list styles */
+.selected-files-list {
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.selected-file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  gap: 8px;
+}
+
+.selected-file-name {
+  flex: 1;
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selected-file-remove {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.selected-file-remove:hover {
+  background-color: #dc2626;
+}
+
+.selected-file-remove:active {
+  transform: translateY(1px);
+}
+
+/* Mobile responsive styles for FooterChat */
+@media (max-width: 768px) {
+  .chat-input-container {
+    padding: 10px 12px;
+  }
+
+  .selected-files-list {
+    max-height: 100px;
+  }
+
+  .selected-file-item {
+    padding: 6px 10px;
+  }
+
+  .selected-file-name {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-input-container {
+    padding: 8px 10px;
+  }
+  
+  .chat-send-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .selected-files-list {
+    max-height: 80px;
+  }
+
+  .selected-file-item {
+    padding: 4px 8px;
+  }
+
+  .selected-file-name {
+    font-size: 12px;
+  }
+
+  .selected-file-remove {
+    padding: 3px 6px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .chat-input-container {
+    padding: 6px 8px;
+  }
+}
+
+/* Высота экрана */
+@media (max-height: 600px) {
+  .chat-input-container {
+    padding: 6px 12px;
+  }
+
+  .selected-files-list {
+    max-height: 60px;
+  }
+}
+
+@media (max-height: 500px) {
+  .chat-input-container {
+    padding: 4px 8px;
+  }
+
+  .selected-files-list {
+    max-height: 50px;
+  }
+}
+
+/* Анимации для отправки сообщений */
+.sending-animation {
+  opacity: 0.7;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Эффекты для темной темы */
+@media (prefers-color-scheme: dark) {
+  .chat-input-container {
+    background-color: #374151;
+    border-top-color: #4b5563;
+  }
+
+  .selected-files-list {
+    background-color: #374151;
+  }
+
+  .selected-file-item {
+    background-color: #4b5563;
+    border-color: #6b7280;
+  }
+
+  .selected-file-name {
+    color: #f9fafb;
+  }
+}

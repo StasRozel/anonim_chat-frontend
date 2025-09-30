@@ -25,7 +25,11 @@ const InputText: React.FC<InputTextProps> = ({
 
   return (
     <div className="chat-input-with-file">
-      <FilePicker onFilesSelected={onFilesSelected} />
+      <FilePicker 
+        accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.zip,.rar"
+        multiple={true}
+        onFilesSelected={onFilesSelected} 
+      />
 
       <input
         type="text"

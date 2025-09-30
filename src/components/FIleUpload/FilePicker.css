@@ -47,3 +47,29 @@
 .ac-file-picker:hover .ac-paper-clip-icon {
   opacity: 1;
 }
+
+/* Специальные стили для Telegram WebApp */
+.tg-viewport .ac-file-picker-button {
+  background: var(--tg-theme-button-color, #3b82f6);
+  border-color: var(--tg-theme-button-color, #3b82f6);
+}
+
+.tg-viewport .ac-file-picker-button:hover {
+  background: var(--tg-theme-button-color, #2563eb);
+  border-color: var(--tg-theme-button-color, #2563eb);
+}
+
+.tg-viewport .ac-paper-clip-icon {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
+/* Дополнительные стили для лучшего взаимодействия */
+.ac-file-input {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  background-color: #2a2d31;
-  border-bottom: 1px solid #3e4145;
+  background-color: var(--tg-theme-bg-color, #2a2d31);
+  border-bottom: 1px solid var(--tg-theme-hint-color, #3e4145);
   min-height: 60px;
   position: sticky;
   top: 0;
@@ -29,11 +29,11 @@
   flex: 1;
 }
 
-.chat-header-title {
+.chat-header-info h1 {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--tg-theme-text-color, #ffffff);
   user-select: none;
   cursor: default;
 }
@@ -48,9 +48,10 @@
 
 .chat-header-status {
   font-size: 14px;
-  color: #8e9297;
+  color: var(--tg-theme-subtitle-text-color, #ffffff);
   margin: 0;
   margin-top: 2px;
+  opacity: 0.8;
 }
 
 .chat-header-online {

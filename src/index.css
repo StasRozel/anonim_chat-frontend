@@ -1,0 +1,7 @@
+.web-app-footer {
+  height: 0 !important;
+  min-height: 0 !important;
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

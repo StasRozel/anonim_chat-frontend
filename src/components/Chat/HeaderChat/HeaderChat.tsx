@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/useRedux";
 import { useNavigate } from "react-router-dom";
 import "./HeaderChat.css";
 import { getAvatarColor } from "../../../store/slices/avatar.slice";
+import { useEffect } from "react";
 
 const HeaderChat: React.FC<{ user: any; isConnected: boolean }> = ({
   user,
@@ -12,7 +13,11 @@ const HeaderChat: React.FC<{ user: any; isConnected: boolean }> = ({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  dispatch(getAvatarColor(user?.id));
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(getAvatarColor(user.id));
+    }
+  }, [user?.id]);
 
   const handleAdminClick = () => {
     if (
@@ -28,7 +33,7 @@ const HeaderChat: React.FC<{ user: any; isConnected: boolean }> = ({
 
   return (
     <header className="chat-header">
-      {/*user.is_admin*/true && (
+      {user.is_admin && (
         <div
           className={` chat-header-title ${
             isAdmin ? "chat-header-title--clickable" : ""
@@ -49,10 +54,12 @@ const HeaderChat: React.FC<{ user: any; isConnected: boolean }> = ({
         {user && user.first_name ? user.first_name[0] : <User size={20} />}
       </div>
       <div className="chat-header-info">
-        <h1>Чат Center D17</h1>
+        <h1 className="chat-header-title">Чат Center D17</h1>
         <p className="chat-header-status">
           {user && user.first_name
-            ? `${user.first_name} ${isConnected ? "в сети" : "не подключен"}`
+            ? `${user.first_name} ${
+                user.chat_nickname ? `(${user.chat_nickname})` : ""
+              } ${isConnected ? "в сети" : "не подключен"}`
             : "Загрузка..."}
           {isConnected && <span className="chat-header-online">●</span>}
         </p>

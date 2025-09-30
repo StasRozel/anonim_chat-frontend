@@ -46,10 +46,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 
   const handleDeleteMessage = () => {
     deleteMessage(currentChatId, message.id);
+    onClose();
   };
 
   const handleDeleteAllMessages = () => {
     deleteAllMessages(currentChatId);
+    onClose();
   };
 
   const handleCopyMessage = () => {
@@ -58,13 +60,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   };
 
   const hanndleEditMessage = () => {
-    
     dispatch(setMessage(message));
     dispatch(setInputText(message.text));
     dispatch(setEditMessage(true));
     console.log("message: ", message);
     onClose();
-  }
+  };
 
   return (
     <div
@@ -81,20 +82,24 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
         📩 Ответить
       </div>
 
-      <div className="context-menu-item" onClick={handlePinMessage}>
+      {user?.is_admin && (
+        <div className="context-menu-item" onClick={handlePinMessage}>
         {message.isPinned ? "📌 Открепить" : "📌 Закрепить"}
       </div>
+      )}
 
       <div className="context-menu-item" onClick={handleCopyMessage}>
         📋 Копировать текст
       </div>
 
-      <div
+      {user?.is_admin && (
+        <div
         className="context-menu-item context-menu-item-danger"
         onClick={handleDeleteAllMessages}
       >
         🗑️ Очистить историю чата
       </div>
+      )}
 
       {user && message.user.id === user.id && (
         <>

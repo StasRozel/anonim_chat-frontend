@@ -43,25 +43,3 @@ export interface JoinChatData {
   chatId: string;
   user: TelegramUser;
 }
-
-
-
-
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp: {
-        ready: () => void;
-        expand: () => void;
-        setHeaderColor: (color: string) => void;
-        downloadFile?: (params: { url: string; file_name: string }, callback?: (success: boolean) => void) => void;
-        openLink?: (url: string) => void;
-        initDataUnsafe: {
-          user?: TelegramUser;
-          chat_instance?: string;
-          auth_date?: number;
-        };
-      };
-    };
-  }
-}

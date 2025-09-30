@@ -16,7 +16,7 @@ export const ButtonActions: React.FC<{user: TelegramUser, handler: (user: Telegr
       <button
         className={`btn ${user[action_name] ? "btn--positive" : "btn--negative"} ${user.id === yourInfo?.id ? "btn--disabled" : ""}`}
         onClick={() => handler(user)}
-        disabled={user.id === yourInfo?.id}
+        disabled={user.id === yourInfo?.id && Number(process.env.SUPER_ADMIN_ID) === user.id}
       >
         {user[action_name] ? action_names[action_name][0] : action_names[action_name][1]}
       </button>

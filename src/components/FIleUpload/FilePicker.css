@@ -3,6 +3,70 @@
   cursor: pointer;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+/* Drag and Drop стили */
+.ac-file-picker-dragging {
+  position: relative;
+}
+
+.ac-file-picker-dragging .ac-file-picker-button {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  transform: scale(1.1);
+}
+
+.ac-file-picker-dragging .ac-paper-clip-icon {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
+.ac-file-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(59, 130, 246, 0.1);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.ac-file-picker-overlay-text {
+  background: #3b82f6;
+  color: white;
+  padding: 20px 40px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Специальные стили для desktop версии */
+.ac-file-picker-desktop .ac-file-picker-button {
+  position: relative;
+}
+
+.ac-file-picker-desktop .ac-file-picker-button::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px dashed #3b82f6;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.ac-file-picker-desktop:hover .ac-file-picker-button::after {
+  opacity: 0.3;
 }
 
 .ac-file-input {

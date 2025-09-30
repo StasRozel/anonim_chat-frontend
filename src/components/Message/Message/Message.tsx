@@ -91,7 +91,6 @@ getAvatarColor(message.user.id)
         data-message-id={message.id}
       >
         <div className="message-content">
-          {/* Аватар только для не-системных сообщений с валидным user */}
           {message.user && (
             <div
               className="message-avatar"

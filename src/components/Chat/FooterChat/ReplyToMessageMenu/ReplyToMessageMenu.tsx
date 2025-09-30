@@ -18,7 +18,7 @@ const ReplyToMessageMenu: React.FC<ReplyToMessageMenuProps> = ({ message, onClos
         <div className={`reply-to-message-menu ${!message ? 'loading' : ''}`}>
             <div>
                 <p className="reply-to-message-menu-user">
-                    Ответ на: {message ? message.user.first_name : "Загрузка..."}
+                    Ответ на: {message ? message.user.chat_nickname == '' ?  message.user.first_name : message.user.chat_nickname : "Загрузка..."}
                 </p>
                 <p className="reply-to-message-menu-text">
                     {message ? message.text : "Загрузка..."}

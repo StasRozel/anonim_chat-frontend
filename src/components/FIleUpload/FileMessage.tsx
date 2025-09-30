@@ -33,6 +33,17 @@ const formatFileSize = (bytes?: number): string => {
   }
 };
 
+// Функция для корректного отображения имени файла
+const sanitizeFileName = (fileName: string): string => {
+  try {
+    // Пробуем декодировать если это закодированная строка
+    return decodeURIComponent(fileName);
+  } catch {
+    // Если декодирование не удалось, возвращаем как есть
+    return fileName;
+  }
+};
+
 const FileMessage: React.FC<FileMessageProps> = ({
   fileName,
   fileSize,
@@ -41,13 +52,16 @@ const FileMessage: React.FC<FileMessageProps> = ({
   isDownloaded = false,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // Обрабатываем имя файла для корректного отображения
+  const displayFileName = sanitizeFileName(fileName);
 
   const handleDownload = async () => {
-    if (!fileUrl || !fileName) return;
+    if (!fileUrl || !displayFileName) return;
     
     try {
-      console.log('fileName', fileName);
-      await filesAPI.downloadFile(fileUrl, fileName);
+      console.log('fileName', displayFileName);
+      await filesAPI.downloadFile(fileUrl, displayFileName);
     } catch (error) {
       console.error('Failed to download file:', error);
       alert('Failed to download file. Please try again.');
@@ -85,7 +99,7 @@ const FileMessage: React.FC<FileMessageProps> = ({
               
             </div>
             <div className="ac-file-meta">
-              <div className="ac-file-name">{fileName}</div>
+              <div className="ac-file-name">{`${displayFileName.substring(0, 20)}${displayFileName.length > 21 ? '...' : ''}`}</div>
               <div className="ac-file-info">
                 {fileSize && (
                   <span className="ac-file-size">{formatFileSize(fileSize)}</span>
@@ -101,8 +115,8 @@ const FileMessage: React.FC<FileMessageProps> = ({
           isOpen={isModalOpen}
           onClose={handleModalClose}
           imageUrl={fileUrl || ''}
-          fileName={fileName}
-          alt={fileName}
+          fileName={displayFileName}
+          alt={displayFileName}
         />
       )}
     </>

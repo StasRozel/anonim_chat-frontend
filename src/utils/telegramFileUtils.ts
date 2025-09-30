@@ -117,5 +117,18 @@ export const isTelegramDesktop = (): boolean => {
   if (!isTelegramWebApp()) return false;
   
   const tg = (window as any).Telegram.WebApp;
-  return tg.platform === 'tdesktop' || tg.platform === 'weba';
+  
+  // Более точная проверка для Desktop версии
+  const isDesktop = tg.platform === 'tdesktop' || 
+                   tg.platform === 'web' || 
+                   (tg.platform === 'weba' && !tg.isVersionAtLeast('6.0'));
+  
+  console.log('Platform detection:', {
+    platform: tg.platform,
+    version: tg.version,
+    isDesktop,
+    userAgent: navigator.userAgent
+  });
+  
+  return isDesktop;
 };

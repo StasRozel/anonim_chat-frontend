@@ -27,7 +27,7 @@ const FilePicker: React.FC<FilePickerProps> = ({ accept = "*/*", multiple = fals
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     
-    // Проверяем, запущены ли мы в Telegram Desktop
+    // Проверяем, запущены ли мы в Telegram Desktop (только для Desktop версии используем специальный метод)
     if (isTelegramWebApp() && isTelegramDesktop()) {
       console.log('Using enhanced Telegram Desktop file picker');
       
@@ -46,14 +46,30 @@ const FilePicker: React.FC<FilePickerProps> = ({ accept = "*/*", multiple = fals
         fallbackFilePicker();
       }
     } else {
-      // Стандартный браузер или мобильный Telegram
+      // Стандартный браузер, мобильный Telegram или Web версия
+      console.log('Using standard file picker for mobile/browser');
       fallbackFilePicker();
     }
   };
 
   const fallbackFilePicker = () => {
+    console.log('Using fallback file picker');
     if (fileInputRef.current) {
-      fileInputRef.current.click();
+      // Сбрасываем все атрибуты для чистого состояния
+      const input = fileInputRef.current;
+      
+      // Устанавливаем атрибуты правильно
+      input.accept = accept;
+      input.multiple = multiple;
+      
+      // Убираем проблемные атрибуты
+      input.removeAttribute('webkitdirectory');
+      
+      // Очищаем значение для возможности выбора того же файла
+      input.value = '';
+      
+      // Программный клик
+      input.click();
     }
   };
 

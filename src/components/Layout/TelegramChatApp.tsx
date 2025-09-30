@@ -8,7 +8,6 @@ import {
   setMessages,
 } from "../../store/slices/chat.slice";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
-import { useSocketRedux } from "../../hooks/useSocket";
 import HeaderChat from "../Chat/HeaderChat/HeaderChat";
 import FooterChat from "../Chat/FooterChat/FooterChat";
 import PinnedMessage from "../Message/PinnedMessage/PinnedMessage";

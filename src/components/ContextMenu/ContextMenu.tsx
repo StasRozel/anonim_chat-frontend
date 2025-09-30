@@ -46,10 +46,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 
   const handleDeleteMessage = () => {
     deleteMessage(currentChatId, message.id);
+    onClose();
   };
 
   const handleDeleteAllMessages = () => {
     deleteAllMessages(currentChatId);
+    onClose();
   };
 
   const handleCopyMessage = () => {
@@ -58,13 +60,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   };
 
   const hanndleEditMessage = () => {
-    
     dispatch(setMessage(message));
     dispatch(setInputText(message.text));
     dispatch(setEditMessage(true));
     console.log("message: ", message);
     onClose();
-  }
+  };
 
   return (
     <div

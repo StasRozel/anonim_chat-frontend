@@ -196,7 +196,6 @@ export const socketMiddleware: Middleware =
       case socketEditMessage.type: {
         if (socket?.connected) {
           const { chatId, message } = action.payload;
-          console.log("Aboba:", message);
           socket.emit("edit-message", { chatId, message });
           console.log("Editing message:", message.text);
         }
